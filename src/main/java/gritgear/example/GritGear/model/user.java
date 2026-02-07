@@ -1,5 +1,55 @@
 package gritgear.example.GritGear.model;
 
-public class user {
+import jakarta.annotation.Generated;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable=false)
+    private String fullName;
+
+    @Column(nullable=false ,unique=true)
+    private String email;
+
+    @Column(nullable=false)
+    private String passward;
+
+    @Column(nullable=false)
+    private String role;
+
+    @Column(nullable = false)
+    private boolean active=true;
     
+    public String getFullName() { return fullName; }
+public void setFullName(String fullName) { this.fullName = fullName; }
+
+public String getEmail() { return email; }
+public void setEmail(String email) { this.email = email; }
+
+public String getRole() { return role; }
+public void setRole(String role) { this.role = role; }
+
+public boolean isActive() { return active; }
+public void setActive(boolean active) { this.active = active; }
 }
