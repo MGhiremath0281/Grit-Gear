@@ -17,6 +17,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        user.setActive(true); 
         return userRepository.save(user);
     }
 
@@ -38,8 +39,12 @@ public class UserServiceImpl implements UserService {
         existing.setFullName(user.getFullName());
         existing.setEmail(user.getEmail());
         existing.setRole(user.getRole());
-        existing.setActive(user.isActive());
         existing.setPhoneNumber(user.getPhoneNumber());
+
+        // update active ONLY if you want
+        if (user.getActive() != null) {
+            existing.setActive(user.getActive());
+        }
 
         return userRepository.save(existing);
     }
