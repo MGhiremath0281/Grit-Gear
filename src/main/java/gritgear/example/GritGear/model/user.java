@@ -1,11 +1,6 @@
 package gritgear.example.GritGear.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -28,7 +23,7 @@ public class User {
     private String role;
 
     @Column(nullable = false)
-    private boolean active = true;
+    private Boolean active;
 
     @Column(nullable = false)
     private String phoneNumber;
@@ -39,7 +34,7 @@ public class User {
     }
 
     public User(Long id, String fullName, String email, String password,
-                String role, boolean active, String phoneNumber) {
+                String role, Boolean active, String phoneNumber) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -91,11 +86,11 @@ public class User {
         this.role = role;
     }
 
-    public boolean isActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
