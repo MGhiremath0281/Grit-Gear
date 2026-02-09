@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import gritgear.example.GritGear.dto.UserRequestDTO;
@@ -19,12 +20,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponseDTO createUser(UserRequestDTO dto) {
         User user = modelMapper.map(dto,User.class);
         user.setActive(true);
 
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         User savedUser = userRepository.save(user);
         return modelMapper.map(savedUser,UserResponseDTO.class);
     }
