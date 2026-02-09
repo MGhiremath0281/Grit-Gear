@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import gritgear.example.GritGear.dto.UserResponseDTO;
+import gritgear.example.GritGear.dto.UserRequestDTO;
 import gritgear.example.GritGear.model.User;
 import gritgear.example.GritGear.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +21,15 @@ public class UserController {
 
     // CREATE USER
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User created = userService.createUser(user);
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO dto) {
+        UserResponseDTO created = userService.createUser(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     // GET USER BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
+        UserResponseDTO user = userService.getUserById(id);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -36,17 +38,17 @@ public class UserController {
 
     // GET ALL USERS
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     // UPDATE USER
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(
+    public ResponseEntity<UserResponseDTO> updateUser(
             @PathVariable Long id,
-            @RequestBody User user) {
+            @RequestBody UserRequestDTO dto) {
 
-        User updated = userService.updateUser(id, user);
+        UserResponseDTO updated = userService.updateUser(id, dto);
         if (updated == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
