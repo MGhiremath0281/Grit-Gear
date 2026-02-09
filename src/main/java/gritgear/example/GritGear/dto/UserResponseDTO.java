@@ -1,13 +1,23 @@
 package gritgear.example.GritGear.dto;
 
 public class UserResponseDTO {
+
     private Long id;
     private String fullName;
     private String email;
     private String role;
     private String phoneNumber;
+    private Boolean active;
 
-      public String getFullName() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFullName() {
         return fullName;
     }
 
@@ -18,7 +28,7 @@ public class UserResponseDTO {
     public String getEmail() {
         return email;
     }
-
+    
     public void setEmail(String email) {
         this.email = email;
     }
@@ -39,5 +49,11 @@ public class UserResponseDTO {
         this.phoneNumber = phoneNumber;
     }
 
-    
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }
