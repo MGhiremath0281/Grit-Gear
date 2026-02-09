@@ -3,6 +3,7 @@ package gritgear.example.GritGear.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import gritgear.example.GritGear.dto.UserRequestDTO;
@@ -17,25 +18,21 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public UserResponseDTO createUser(UserRequestDTO dto) {
-        User user = new User();
-        user.setFullName(dto.getFullName());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
-        user.setRole(dto.getRole());
-        user.setPhoneNumber(dto.getPhoneNumber());
+        User user = modelMapper.map(dto,User.class);
         user.setActive(true);
 
         User savedUser = userRepository.save(user);
-        return mapToResponseDTO(savedUser);
+        return modelMapper.map(savedUser,UserResponseDTO.class);
     }
 
     @Override
     public UserResponseDTO getUserById(Long id) {
         return userRepository.findById(id)
-                .map(this::mapToResponseDTO)
+                .map(user -> modelMapper.map(user,UserResponseDTO.class))
                 .orElse(null);
     }
 
@@ -43,7 +40,7 @@ public class UserServiceImpl implements UserService {
     public List<UserResponseDTO> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(this::mapToResponseDTO)
+                .map(user->modelMapper.map(user,UserResponseDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -58,7 +55,7 @@ public class UserServiceImpl implements UserService {
         existing.setPhoneNumber(dto.getPhoneNumber());
 
         User updatedUser = userRepository.save(existing);
-        return mapToResponseDTO(updatedUser);
+        return modelMapper.map(updatedUser, UserResponseDTO.class);
     }
 
     @Override
@@ -66,15 +63,4 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    // Entity → DTO mapper
-    private UserResponseDTO mapToResponseDTO(User user) {
-        UserResponseDTO response = new UserResponseDTO();
-        response.setId(user.getId());
-        response.setFullName(user.getFullName());
-        response.setEmail(user.getEmail());
-        response.setRole(user.getRole());
-        response.setPhoneNumber(user.getPhoneNumber());
-        response.setActive(user.getActive());
-        return response;
-    }
 }
