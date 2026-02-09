@@ -2,16 +2,18 @@ package gritgear.example.GritGear.service;
 
 import gritgear.example.GritGear.model.User;
 import java.util.List;
+import gritgear.example.GritGear.dto.UserRequestDTO;
+import gritgear.example.GritGear.dto.UserResponseDTO;
 
 public interface UserService {
 
-    User createUser(User user);
+    UserResponseDTO createUser(UserRequestDTO userRequestDTO);
 
-    User getUserById(Long id);
+    UserResponseDTO getUserById(Long id);
 
-    List<User> getAllUsers();
+    List<UserResponseDTO> getAllUsers();
 
-    User updateUser(Long id, User user);
+    UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO);
 
     void deleteUser(Long id);
 }
