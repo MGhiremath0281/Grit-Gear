@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Biometric Attendance Reporting Application v3.01</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Tahoma, Arial, sans-serif;
+  background:#dcdcdc;
+}
+
+table{
+  border-collapse:collapse;
+  font-size:12px;
+}
+
+td,th{
+  border:1px solid #9a9a9a;
+  padding:4px;
+  white-space:nowrap;
+}
+
+.container{
+  display:flex;
+  height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar{
+  width:190px;
+  background:#2f7fc1;
+  color:#fff;
+}
+
+.logo{
+  text-align:center;
+  padding:10px 0;
+}
+
+.logo b{ font-size:18px; }
+.logo div{ font-size:12px; }
+
+.menu-title{
+  background:#1e6fb3;
+  text-align:center;
+  padding:6px 0;
+  font-size:12px;
+  border-top:1px solid #0f4e86;
+  border-bottom:1px solid #0f4e86;
+}
+
+.menu{
+  padding:6px 4px;
+}
+
+.menu-btn{
+  background:#f0f0f0;
+  color:#000;
+  border:2px solid #1e6fb3;
+  padding:8px 4px;
+  margin-bottom:8px;
+  text-align:center;
+  font-size:12px;
+}
+
+/* Sidebar bottom */
+.sidebar-footer{
+  position:absolute;
+  bottom:8px;
+  width:190px;
+  text-align:center;
+  font-size:10px;
+}
+
+/* ================= MAIN ================= */
+.main{
+  flex:1;
+  background:#efefef;
+}
+
+.titlebar{
+  background:#000;
+  color:#fff;
+  text-align:center;
+  padding:6px;
+  font-weight:bold;
+}
+
+.reportbar{
+  background:#39b54a;
+  color:#fff;
+  padding:6px 10px;
+  font-weight:bold;
+}
+
+/* ================= FILTERS ================= */
+.filters{
+  padding:8px;
+  background:#e6e6e6;
+}
+
+.filters table td{
+  border:none;
+  padding:3px 6px;
+}
+
+.filters input,
+.filters select{
+  width:150px;
+  font-size:12px;
+}
+
+/* ================= CENTER ACTIONS ================= */
+.actions{
+  text-align:center;
+  padding:10px 0;
+}
+
+.action-btn{
+  border:1px solid #000;
+  background:#eaeaea;
+  padding:4px 14px;
+  font-size:12px;
+  margin:0 6px;
+}
+
+.icon-btn{
+  border:1px solid #000;
+  background:#fff;
+  padding:4px 8px;
+  font-size:12px;
+}
+
+/* ================= DATA TABLE ================= */
+.data{
+  margin:6px;
+  background:#fff;
+}
+
+.email{
+  max-width:90px;
+  overflow:hidden;
+  text-overflow:clip;
+}
+
+/* ================= FOOTER ================= */
+.green-line{
+  height: 10px;
+  background: #8ccf9b;
+  margin-top: 70px;   /* pushes the green line DOWN */
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+
+.status-bar{
+  margin:6px 10px;
+  font-size:11px;
+  margin-top: 70px; 
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo">
+      <b>2CQR</b><br>
+      Automation
+    </div>
+
+    <div class="menu-title">Menu</div>
+
+    <div class="menu">
+      <div class="menu-btn">Dashboard</div>
+      <div class="menu-btn">IN / OUT</div>
+      <div class="menu-btn">Device Info</div>
+      <div class="menu-btn">Manual Sync</div>
+      <div class="menu-btn">Set Auto Sync Time</div>
+      <div class="menu-btn">Staff / Student<br>Category</div>
+      <div class="menu-btn">Attendance Upload</div>
+      <div class="menu-btn">User (Enroll/Delete)</div>
+      <div class="menu-btn">Database Mgmt</div>
+      <div class="menu-btn">Settings</div>
+      <div class="menu-btn">Users</div>
+      <div class="menu-btn">Log out</div>
+    </div>
+
+    <div class="sidebar-footer">
+      Powered By<br>
+      2CQR Automation
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="titlebar">
+      Biometric Attendance Reporting Application v3.01
+    </div>
+
+    <center><div class="reportbar">Report</div></center>
+
+    <!-- FILTERS -->
+    <div class="filters">
+      <table>
+        <tr>
+          <td>Report Type</td><td><select><option>IN/OUT</option></select></td>
+          <td>From Date</td><td><input value="01/10/2025"></td>
+          <td>To Date</td><td><input value="02/01/2026"></td>
+          <td>Top</td><td><input value="0"></td>
+        </tr>
+        <tr>
+          <td>Card No</td><td><input value="SW23CSE132"></td>
+          <td>Location</td><td><select><option>ALL</option></select></td>
+          <td>Machine IP</td><td><select><option>ALL</option></select></td>
+        </tr>
+        <tr>
+          <td>Student Visit Count</td><td>0</td>
+          <td>Staff Visit Count</td><td>0</td>
+          <td>Total</td><td>0</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- CENTERED ACTION BUTTONS -->
+    <div class="actions">
+      <button class="action-btn">Report</button>
+      <button class="action-btn">Excel</button>
+      <button class="icon-btn">PDF</button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="data">
+      <table width="100%">
+        <tr>
+          <th>S.No</th><th>BioID</th><th>CardNumber</th><th>Name</th>
+          <th>Phone</th><th>Email</th><th>Category</th>
+          <th>DeptName</th><th>Gender</th><th>Designation</th>
+          <th>Batch</th><th>Date</th><th>In</th><th>OUT</th>
+          <th>Timespent</th><th>Remarks</th>
+        </tr>
+
+        <tr>
+          <td>1</td><td>1050</td><td>SW23CSE132</td><td>SUHANI K</td>
+          <td>8217776359</td><td class="email">suhanikankatte8088@gmail.com</td>
+          <td>STD</td><td></td><td></td><td></td><td></td>
+          <td>05-10-2025</td><td>12:14:33</td><td></td><td></td><td></td>
+        </tr>
+
+        <tr>
+          <td>2</td><td>1050</td><td>SW23CSE132</td><td>SUHANI K</td>
+          <td>8217776359</td><td class="email">suhanikankatte8088@gmail.com</td>
+          <td>STD</td><td></td><td></td><td></td><td></td>
+          <td>27-12-2025</td><td>11:40:43</td><td>13:18:33</td><td>01:37:50</td><td></td>
+        </tr>
+
+        <tr>
+          <td>3</td><td>1050</td><td>SW23CSE132</td><td>SUHANI K</td>
+          <td>8217776359</td><td class="email">suhanikankatte8088@gmail.com</td>
+          <td>STD</td><td></td><td></td><td></td><td></td>
+          <td>30-12-2025</td><td>10:52:10</td><td>10:58:54</td><td>00:06:44</td><td></td>
+        </tr>
+        <tr>
+  <td>4</td><td>1050</td><td>SW23CSE132</td><td>SUHANI K</td>
+  <td>8217776359</td><td class="email">suhanikankatte8088@gmail.com</td>
+  <td>STD</td><td></td><td></td><td></td><td></td>
+  <td>02-01-2026</td><td>09:48:22</td><td>12:05:10</td><td>02:16:48</td><td></td>
+</tr>
+
+<tr>
+  <td>5</td><td>1050</td><td>SW23CSE132</td><td>SUHANI K</td>
+  <td>8217776359</td><td class="email">suhanikankatte8088@gmail.com</td>
+  <td>STD</td><td></td><td></td><td></td><td></td>
+  <td>04-01-2026</td><td>10:11:45</td><td></td><td></td><td></td>
+</tr>
+
+<tr>
+  <td>6</td><td>1050</td><td>SW23CSE132</td><td>SUHANI K</td>
+  <td>8217776359</td><td class="email">suhanikankatte8088@gmail.com</td>
+  <td>STD</td><td></td><td></td><td></td><td></td>
+  <td>06-01-2026</td><td>11:02:30</td><td>14:36:18</td><td>03:33:48</td><td></td>
+</tr>
+
+<tr>
+  <td>7</td><td>1050</td><td>SW23CSE132</td><td>SUHANI K</td>
+  <td>8217776359</td><td class="email">suhanikankatte8088@gmail.com</td>
+  <td>STD</td><td></td><td></td><td></td><td></td>
+  <td>08-01-2026</td><td>09:55:09</td><td>12:01:44</td><td>02:06:35</td><td></td>
+</tr>
+
+<tr>
+  <td>8</td><td>1050</td><td>SW23CSE132</td><td>SUHANI K</td>
+  <td>8217776359</td><td class="email">suhanikankatte8088@gmail.com</td>
+  <td>STD</td><td></td><td></td><td></td><td></td>
+  <td>10-01-2026</td><td>10:18:57</td><td></td><td></td><td></td>
+</tr>
+
+<tr>
+  <td>9</td><td>1050</td><td>SW23CSE132</td><td>SUHANI K</td>
+  <td>8217776359</td><td class="email">suhanikankatte8088@gmail.com</td>
+  <td>STD</td><td></td><td></td><td></td><td></td>
+  <td>12-01-2026</td><td>11:36:41</td><td>13:09:02</td><td>01:32:21</td><td></td>
+</tr>
+
+      </table>
+    </div>
+
+
+
+
+
+    <div class="green-line"></div>
+
+    <div class="status-bar">
+      IP : 192.168.0.201 - Connected<br>
+      Attendance Calculation Processing please wait...<br>
+      Attendance Calculation Completed<br>
+      Manual Synchronization Completed
+    </div>
+  </div>
+</div>
+</body>
+</html>
