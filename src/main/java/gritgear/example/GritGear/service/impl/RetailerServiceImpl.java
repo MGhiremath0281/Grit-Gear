@@ -64,8 +64,9 @@ public class RetailerServiceImpl implements RetailerService {
     }
 
     @Override
-    public void deleteRetailer(Long id) {
+    public RetailerResponseDTO deleteRetailer(Long id) {
         retailerRepositry.deleteById(id);
+        return null;
     }
 
 
