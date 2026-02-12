@@ -9,5 +9,5 @@ public interface RetailerService {
     Retailer getRetailerById(Long id);
     List<Retailer> getAllRetailers();
     Retailer updateRetailer(Long id,Retailer retailer);
-    void deleteRetailer(Long id);
+    Retailer deleteRetailer(Long id);
 }
