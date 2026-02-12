@@ -5,6 +5,8 @@ import gritgear.example.GritGear.dto.RetailerResponseDTO;
 import gritgear.example.GritGear.model.Retailer;
 import gritgear.example.GritGear.repositry.RetailerRepositry;
 import gritgear.example.GritGear.service.RetailerService;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,28 +16,30 @@ import java.util.stream.Collectors;
 public class RetailerServiceImpl implements RetailerService {
 
     private final RetailerRepositry retailerRepositry;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public RetailerServiceImpl(RetailerRepositry retailerRepositry) {
+
+    public RetailerServiceImpl(RetailerRepositry retailerRepositry, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.retailerRepositry = retailerRepositry;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public RetailerResponseDTO createRetailer(RetailerRequestDTO dto) {
-            Retailer retailer = new Retailer();
-            retailer.setName(dto.getName());
-            retailer.setPassword(dto.getPassword());
-            retailer.setPhone(dto.getPhone());
-            retailer.setAddress(dto.getAddress());
-            retailer.setProducts(dto.getProducts());
-            Retailer saved = retailerRepositry.save(retailer);
-            return  mapToResponseDTO(saved);
 
+        Retailer retailer = modelMapper.map(dto, Retailer.class);
+        retailer.setPassword(passwordEncoder.encode(dto.getPassword()));
+        Retailer saved = retailerRepositry.save(retailer);
+        return modelMapper.map(saved, RetailerResponseDTO.class);
     }
+
 
     @Override
     public RetailerResponseDTO getRetailerById(Long id) {
         return retailerRepositry.findById(id)
-                .map(this::mapToResponseDTO)
+                .map(retailer -> modelMapper.map(retailer,RetailerResponseDTO.class))
                 .orElse(null);
     }
 
@@ -43,7 +47,7 @@ public class RetailerServiceImpl implements RetailerService {
     public List<RetailerResponseDTO> getAllRetailers() {
         return retailerRepositry.findAll()
                 .stream()
-                .map(this::mapToResponseDTO)
+                .map(retailer -> modelMapper.map(retailer,RetailerResponseDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -60,7 +64,7 @@ public class RetailerServiceImpl implements RetailerService {
         existing.setProducts(dto.getProducts());
 
        Retailer updated = retailerRepositry.save(existing);
-       return mapToResponseDTO(updated);
+       return modelMapper.map(updated,RetailerResponseDTO.class);
     }
 
     @Override
@@ -69,16 +73,5 @@ public class RetailerServiceImpl implements RetailerService {
         return null;
     }
 
-
-    private RetailerResponseDTO mapToResponseDTO(Retailer retailer){
-        RetailerResponseDTO response = new RetailerResponseDTO();
-        response.setId(retailer.getId());
-        response.setName(retailer.getName());
-        response.setAddress(retailer.getAddress());
-        response.setEmail(retailer.getEmail());
-        response.setPhone(retailer.getPhone());
-        response.setProducts(retailer.getProducts());
-        return response;
-    }
 }
 
