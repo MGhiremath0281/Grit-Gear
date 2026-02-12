@@ -9,11 +9,16 @@ import java.util.List;
 
 @Service
 public class RetailerServiceImpl implements RetailerService {
-    private RetailerRepositry retailerRepositry;
+
+    private final RetailerRepositry retailerRepositry;
+
+    public RetailerServiceImpl(RetailerRepositry retailerRepositry) {
+        this.retailerRepositry = retailerRepositry;
+    }
 
     @Override
     public Retailer createRetailer(Retailer retailer) {
-        return retailerRepositry.save(retailer) ;
+        return retailerRepositry.save(retailer);
     }
 
     @Override
@@ -28,21 +33,27 @@ public class RetailerServiceImpl implements RetailerService {
 
     @Override
     public Retailer updateRetailer(Long id, Retailer retailer) {
-      Retailer existing = retailerRepositry.findById(id).orElse(null);
 
-      if(existing == null)return null;
+        Retailer existing = retailerRepositry.findById(id).orElse(null);
+        if (existing == null) return null;
 
-      existing.setName(retailer.getName());
-      existing.setEmail(retailer.getEmail());
-      existing.setAddress(retailer.getAddress());
-      existing.setPhone(retailer.getPhone());
-      existing.setProducts(retailer.getProducts());
-      return retailerRepositry.save(existing);
+        existing.setName(retailer.getName());
+        existing.setEmail(retailer.getEmail());
+        existing.setAddress(retailer.getAddress());
+        existing.setPhone(retailer.getPhone());
+        existing.setProducts(retailer.getProducts());
+
+        return retailerRepositry.save(existing);
     }
 
     @Override
     public Retailer deleteRetailer(Long id) {
-    retailerRepositry.deleteById(id);
-        return null;
+
+        Retailer existing = retailerRepositry.findById(id).orElse(null);
+        if (existing == null) return null;
+
+        retailerRepositry.delete(existing);
+        return existing;
     }
 }
+
