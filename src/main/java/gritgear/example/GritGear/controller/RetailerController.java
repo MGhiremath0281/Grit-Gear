@@ -1,5 +1,7 @@
 package gritgear.example.GritGear.controller;
 
+import gritgear.example.GritGear.dto.RetailerRequestDTO;
+import gritgear.example.GritGear.dto.RetailerResponseDTO;
 import gritgear.example.GritGear.model.Retailer;
 import gritgear.example.GritGear.service.RetailerService;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +23,15 @@ public class RetailerController{
 
     // CREATE
     @PostMapping
-    public ResponseEntity<Retailer> createRetailer(@RequestBody Retailer retailer) {
-        Retailer created = retailerService.createRetailer(retailer);
+    public ResponseEntity<RetailerResponseDTO> createRetailer(@RequestBody RetailerRequestDTO dto) {
+        RetailerResponseDTO created = retailerService.createRetailer(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     // GET BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<Retailer> getRetailer(@PathVariable Long id) {
-        Retailer got = retailerService.getRetailerById(id);
+    public ResponseEntity<RetailerResponseDTO> getRetailer(@PathVariable Long id) {
+        RetailerResponseDTO got = retailerService.getRetailerById(id);
 
         if (got == null) {
             return ResponseEntity.notFound().build();
@@ -40,18 +42,18 @@ public class RetailerController{
 
     // GET ALL
     @GetMapping
-    public ResponseEntity<List<Retailer>> getAllRetailers() {
-        List<Retailer> retailers = retailerService.getAllRetailers();
+    public ResponseEntity<List<RetailerResponseDTO>> getAllRetailers() {
+        List<RetailerResponseDTO> retailers = retailerService.getAllRetailers();
         return ResponseEntity.ok(retailers);
     }
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<Retailer> updateRetailer(
+    public ResponseEntity<RetailerResponseDTO> updateRetailer(
             @PathVariable Long id,
-            @RequestBody Retailer retailer) {
+            @RequestBody RetailerRequestDTO dto) {
 
-        Retailer updated = retailerService.updateRetailer(id, retailer);
+        RetailerResponseDTO updated = retailerService.updateRetailer(id, dto);
 
         if (updated == null) {
             return ResponseEntity.notFound().build();
@@ -62,9 +64,9 @@ public class RetailerController{
 
     // DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<Retailer> deleteRetailer(@PathVariable Long id) {
+    public ResponseEntity<RetailerResponseDTO> deleteRetailer(@PathVariable Long id) {
 
-        Retailer deleted = retailerService.deleteRetailer(id);
+        RetailerResponseDTO deleted = retailerService.deleteRetailer(id);
 
         if (deleted == null) {
             return ResponseEntity.notFound().build();
