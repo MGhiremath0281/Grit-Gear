@@ -77,7 +77,7 @@ public class RetailerServiceImpl implements RetailerService {
         response.setAddress(retailer.getAddress());
         response.setEmail(retailer.getEmail());
         response.setPhone(retailer.getPhone());
-        response.setProducts(retailer.getProducts();
+        response.setProducts(retailer.getProducts());
         return response;
     }
 }
