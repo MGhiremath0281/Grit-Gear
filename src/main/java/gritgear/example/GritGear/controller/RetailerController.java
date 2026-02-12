@@ -15,6 +15,9 @@ import java.util.List;
 public class RetailerController {
 
     private final RetailerService retailerService;
+    public RetailerController(RetailerService retailerService) {
+        this.retailerService = retailerService;
+    }
 
     // CREATE
     @PostMapping
