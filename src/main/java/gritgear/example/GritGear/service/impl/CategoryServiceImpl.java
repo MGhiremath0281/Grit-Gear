@@ -3,8 +3,10 @@ package gritgear.example.GritGear.service.impl;
 import gritgear.example.GritGear.dto.CategoryRequestDTO;
 import gritgear.example.GritGear.dto.CategoryResponseDTO;
 import gritgear.example.GritGear.model.Category;
+import gritgear.example.GritGear.model.Retailer;
 import gritgear.example.GritGear.repositry.CategoryRepositry;
 import gritgear.example.GritGear.service.CategoryService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,21 +16,20 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepositry categoryRepositry;
+    private final ModelMapper modelMapper;
 
-    public CategoryServiceImpl(CategoryRepositry categoryRepositry) {
+    public CategoryServiceImpl(CategoryRepositry categoryRepositry, ModelMapper modelMapper) {
         this.categoryRepositry = categoryRepositry;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public CategoryResponseDTO createCategory(CategoryRequestDTO dto) {
 
-        Category category = new Category();
-        category.setProname(dto.getProname());
-        category.setDescription(dto.getDescription());
-
+        Category category = modelMapper.map(dto, Category.class);
         Category saved = categoryRepositry.save(category);
 
-        return mapToResponse(saved);
+        return modelMapper.map(saved, CategoryResponseDTO.class);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepositry.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category NOT FOUND with id: " + id));
 
-        return mapToResponse(category);
+        return modelMapper.map(category, CategoryResponseDTO.class);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryRepositry.findAll()
                 .stream()
-                .map(this::mapToResponse)
+                .map(category -> modelMapper.map(category, CategoryResponseDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -60,21 +61,11 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category updated = categoryRepositry.save(existing);
 
-        return mapToResponse(updated);
+        return modelMapper.map(updated, CategoryResponseDTO.class);
     }
 
     @Override
     public void deleteCategory(Long id) {
         categoryRepositry.deleteById(id);
-    }
-
-    private CategoryResponseDTO mapToResponse(Category category) {
-
-        CategoryResponseDTO dto = new CategoryResponseDTO();
-
-        dto.setProname(category.getProname());
-        dto.setDescription(category.getDescription());
-
-        return dto;
     }
 }
