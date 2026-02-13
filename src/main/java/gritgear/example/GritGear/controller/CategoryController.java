@@ -1,5 +1,7 @@
 package gritgear.example.GritGear.controller;
 
+import gritgear.example.GritGear.dto.CategoryRequestDTO;
+import gritgear.example.GritGear.dto.CategoryResponseDTO;
 import gritgear.example.GritGear.model.Category;
 import gritgear.example.GritGear.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -19,14 +21,14 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody Category category){
-       Category created = categoryService.createCategory(category);
+    public ResponseEntity<CategoryResponseDTO> createCategory(@RequestBody CategoryRequestDTO dto){
+       CategoryResponseDTO created = categoryService.createCategory(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategorybyId(@PathVariable Long id){
-        Category got = categoryService.getCategorybyId(id);
+    public ResponseEntity<CategoryResponseDTO> getCategorybyId(@PathVariable Long id){
+        CategoryResponseDTO got = categoryService.getCategorybyId(id);
        if(got ==null){
            return  ResponseEntity.notFound().build();
        }
@@ -36,17 +38,17 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> getAllCategory(){
-        List<Category> categories = categoryService.getAllCategory();
+    public ResponseEntity<List<CategoryResponseDTO>> getAllCategory(){
+        List<CategoryResponseDTO> categories = categoryService.getAllCategory();
         return ResponseEntity.ok(categories);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(
+    public ResponseEntity<CategoryResponseDTO> updateCategory(
             @PathVariable Long id,
-            @RequestParam Category category){
-        Category updated = categoryService.updateCategory(id,category);
+            @RequestParam CategoryRequestDTO dto){
+        CategoryResponseDTO updated = categoryService.updateCategory(id,dto);
         return ResponseEntity.ok(updated);
     }
 
