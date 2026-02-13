@@ -1,8 +1,17 @@
 package gritgear.example.GritGear.dto;
 
-public class CategoryResponseDTO {
+public class CategoryRequestDTO {
+    private Long id;
     private String proname;
     private String description;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getProname() {
         return proname;
