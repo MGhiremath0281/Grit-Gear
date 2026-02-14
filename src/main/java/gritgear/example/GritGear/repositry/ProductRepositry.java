@@ -1,4 +1,8 @@
 package gritgear.example.GritGear.repositry;
 
-public interface ProductRepositry {
+import gritgear.example.GritGear.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepositry extends JpaRepository<Product,Long> {
 }
+
