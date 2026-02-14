@@ -1,6 +1,7 @@
 package gritgear.example.GritGear.controller;
 
-import gritgear.example.GritGear.model.Product;
+import gritgear.example.GritGear.dto.ProductResponseDTO;
+import gritgear.example.GritGear.dto.ProductrequestDTO;
 import gritgear.example.GritGear.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,33 +22,40 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product saved = productService.createProduct(product);
+    public ResponseEntity<ProductResponseDTO> createProduct(
+            @RequestBody ProductrequestDTO dto) {
+
+        ProductResponseDTO saved = productService.createProduct(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
+    public ResponseEntity<ProductResponseDTO> getProductById(
+            @PathVariable Long id) {
+
+        ProductResponseDTO product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
+
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(
+    public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable Long id,
-            @RequestBody Product product) {
+            @RequestBody ProductrequestDTO dto) {
 
-        Product updated = productService.updateProduct(id, product);
+        ProductResponseDTO updated = productService.updateProduct(id, dto);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduct(
+            @PathVariable Long id) {
+
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
