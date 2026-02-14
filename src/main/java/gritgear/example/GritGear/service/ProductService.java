@@ -1,5 +1,7 @@
 package gritgear.example.GritGear.service;
 
+import gritgear.example.GritGear.dto.ProductResponseDTO;
+import gritgear.example.GritGear.dto.ProductrequestDTO;
 import gritgear.example.GritGear.model.Product;
 
 import java.util.List;
@@ -7,13 +9,13 @@ import java.util.Optional;
 
 public interface ProductService {
 
-    Product createProduct(Product product);
+    ProductResponseDTO createProduct(ProductrequestDTO dto);
 
-    List<Product> getAllProducts();
+    List<ProductResponseDTO> getAllProducts();
 
-    Product getProductById(Long id);
+    ProductResponseDTO getProductById(Long id);
 
-    Product updateProduct(Long id, Product product);
+    ProductResponseDTO updateProduct(Long id, ProductrequestDTO dto);
 
     void deleteProduct(Long id);
 }
