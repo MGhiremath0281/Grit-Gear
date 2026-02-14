@@ -1,7 +1,6 @@
 package gritgear.example.GritGear.dto;
 
 public class ProductrequestDTO {
-    private Long id;
     private String name;
     private String description;
     private Double price;

@@ -1,6 +1,7 @@
 package gritgear.example.GritGear.dto;
 
 public class ProductResponseDTO {
+    private Long id;
     private String name;
     private String description;
     private Double price;
@@ -8,6 +9,13 @@ public class ProductResponseDTO {
     private String category;
     private String imageUrl;
     private String retailer;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
