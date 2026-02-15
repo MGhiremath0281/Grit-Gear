@@ -1,17 +1,18 @@
 package gritgear.example.GritGear.service;
 
-import gritgear.example.GritGear.model.OrderItem;
+import gritgear.example.GritGear.dto.OrderItemRequestDTO;
+import gritgear.example.GritGear.dto.OrderItemResponseDTO;
 import java.util.List;
 
 public interface OrderItemService {
 
-    OrderItem addItem(OrderItem orderItem);
+    OrderItemResponseDTO addItem(OrderItemRequestDTO dto);
 
-    OrderItem updateItem(Long id, OrderItem orderItem);
+    OrderItemResponseDTO updateItem(Long id, OrderItemRequestDTO dto);
 
-    OrderItem getOrderItemById(Long id);
+    OrderItemResponseDTO getOrderItemById(Long id);
 
-    List<OrderItem> getAllOrderItems();
+    List<OrderItemResponseDTO> getAllOrderItems();
 
     void deleteItem(Long id);
 }
