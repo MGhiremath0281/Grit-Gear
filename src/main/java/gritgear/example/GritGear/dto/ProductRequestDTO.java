@@ -9,13 +9,6 @@ public class ProductRequestDTO {
     private String imageUrl;
     private String retailer;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
