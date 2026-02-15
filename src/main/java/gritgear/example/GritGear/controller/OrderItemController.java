@@ -1,6 +1,7 @@
 package gritgear.example.GritGear.controller;
 
-import gritgear.example.GritGear.model.OrderItem;
+import gritgear.example.GritGear.dto.OrderItemRequestDTO;
+import gritgear.example.GritGear.dto.OrderItemResponseDTO;
 import gritgear.example.GritGear.service.OrderItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,36 +20,40 @@ public class OrderItemController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderItem> addItem(@RequestBody OrderItem orderItem) {
+    public ResponseEntity<OrderItemResponseDTO> addItem(
+            @RequestBody OrderItemRequestDTO dto) {
 
-        OrderItem created = orderItemService.addItem(orderItem);
+        OrderItemResponseDTO created = orderItemService.addItem(dto);
 
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderItem> getItemById(@PathVariable Long id) {
+    public ResponseEntity<OrderItemResponseDTO> getItemById(
+            @PathVariable Long id) {
 
-        OrderItem item = orderItemService.getOrderItemById(id);
+        OrderItemResponseDTO item = orderItemService.getOrderItemById(id);
 
         return ResponseEntity.ok(item);
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderItem>> getAllItems() {
+    public ResponseEntity<List<OrderItemResponseDTO>> getAllItems() {
 
-        List<OrderItem> items = orderItemService.getAllOrderItems();
+        List<OrderItemResponseDTO> items =
+                orderItemService.getAllOrderItems();
 
         return ResponseEntity.ok(items);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderItem> updateItem(
+    public ResponseEntity<OrderItemResponseDTO> updateItem(
             @PathVariable Long id,
-            @RequestBody OrderItem orderItem
+            @RequestBody OrderItemRequestDTO dto
     ) {
 
-        OrderItem updated = orderItemService.updateItem(id, orderItem);
+        OrderItemResponseDTO updated =
+                orderItemService.updateItem(id, dto);
 
         return ResponseEntity.ok(updated);
     }
