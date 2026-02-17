@@ -1,9 +1,6 @@
 package gritgear.example.GritGear.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Product {
@@ -17,7 +14,10 @@ public class Product {
     private Integer quantity;
     private String category;
     private String imageUrl;
-    private String retailer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "retailer_id",nullable = false)
+    private Retailer retailer;
 
     public Long getId() {
         return id;
@@ -75,11 +75,11 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public String getRetailer() {
+    public Retailer getRetailer() {
         return retailer;
     }
 
-    public void setRetailer(String retailer) {
+    public void setRetailer(Retailer retailer) {
         this.retailer = retailer;
     }
 }
