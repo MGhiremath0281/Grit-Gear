@@ -1,4 +1,4 @@
-package gritgear.example.GritGear.dto;
+package gritgear.example.GritGear.dto.retailer;
 
 public class RetailerResponseDTO {
     private Long id;
@@ -46,14 +46,6 @@ public class RetailerResponseDTO {
         this.address = address;
     }
 
-    public String getProducts() {
-        return products;
-    }
-
-    public void setProducts(String products) {
-        this.products = products;
-    }
 
     private String address;
-    private String products;
 }

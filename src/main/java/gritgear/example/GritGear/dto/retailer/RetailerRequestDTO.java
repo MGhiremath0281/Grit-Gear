@@ -1,10 +1,11 @@
-package gritgear.example.GritGear.dto;
+package gritgear.example.GritGear.dto.retailer;
 
 public class RetailerRequestDTO {
     private String name;
     private String phone;
     private String email;
     private String password;
+    private String address;
 
     public String getPassword() {
         return password;
@@ -45,16 +46,5 @@ public class RetailerRequestDTO {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    public String getProducts() {
-        return products;
-    }
-
-    public void setProducts(String products) {
-        this.products = products;
-    }
-
-    private String address;
-    private String products;
 
 }
