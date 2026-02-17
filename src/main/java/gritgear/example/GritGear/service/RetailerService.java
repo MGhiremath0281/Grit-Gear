@@ -1,7 +1,7 @@
 package gritgear.example.GritGear.service;
 
-import gritgear.example.GritGear.dto.RetailerRequestDTO;
-import gritgear.example.GritGear.dto.RetailerResponseDTO;
+import gritgear.example.GritGear.dto.retailer.RetailerRequestDTO;
+import gritgear.example.GritGear.dto.retailer.RetailerResponseDTO;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ public interface RetailerService {
     RetailerResponseDTO getRetailerById(Long id);
     List<RetailerResponseDTO> getAllRetailers();
     RetailerResponseDTO updateRetailer(Long id,RetailerRequestDTO dto);
-    public RetailerResponseDTO deleteRetailer(Long id);
+    public void deleteRetailer(Long id);
 }

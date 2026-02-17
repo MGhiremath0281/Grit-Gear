@@ -1,9 +1,11 @@
 package gritgear.example.GritGear.service.impl;
 
-import gritgear.example.GritGear.dto.product.ProductResponseDTO;
 import gritgear.example.GritGear.dto.product.ProductRequestDTO;
+import gritgear.example.GritGear.dto.product.ProductResponseDTO;
 import gritgear.example.GritGear.model.Product;
+import gritgear.example.GritGear.model.Retailer;
 import gritgear.example.GritGear.repositry.ProductRepositry;
+import gritgear.example.GritGear.repositry.RetailerRepositry;
 import gritgear.example.GritGear.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -15,39 +17,47 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepositry productRepositry;
     private final ModelMapper modelMapper;
+    private final RetailerRepositry retailerRepositry;
 
     public ProductServiceImpl(ProductRepositry productRepositry,
-                              ModelMapper modelMapper) {
+                              ModelMapper modelMapper,
+                              RetailerRepositry retailerRepositry) {
         this.productRepositry = productRepositry;
         this.modelMapper = modelMapper;
+        this.retailerRepositry = retailerRepositry;
     }
 
-    // CREATE
     @Override
     public ProductResponseDTO createProduct(ProductRequestDTO dto) {
 
-        // DTO → Entity
-        Product product = modelMapper.map(dto, Product.class);
+        Retailer retailer = retailerRepositry.findById(dto.getRetailerId())
+                .orElseThrow(() -> new RuntimeException("Retailer not found"));
 
-        // Save
-        Product savedProduct = productRepositry.save(product);
+        Product product = new Product();
+        product.setName(dto.getName());
+        product.setDescription(dto.getDescription());
+        product.setPrice(dto.getPrice());
+        product.setQuantity(dto.getQuantity());
+        product.setCategory(dto.getCategory());
+        product.setImageUrl(dto.getImageUrl());
+        product.setRetailer(retailer);
 
-        // Entity → ResponseDTO
-        return modelMapper.map(savedProduct, ProductResponseDTO.class);
+        Product saved = productRepositry.save(product);
+
+        return mapToResponseDTO(saved);
     }
 
-    // READ ALL
+
+
     @Override
     public List<ProductResponseDTO> getAllProducts() {
 
         return productRepositry.findAll()
                 .stream()
-                .map(product ->
-                        modelMapper.map(product, ProductResponseDTO.class))
+                .map(this::mapToResponseDTO)
                 .toList();
     }
 
-    // READ BY ID
     @Override
     public ProductResponseDTO getProductById(Long id) {
 
@@ -55,10 +65,9 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() ->
                         new RuntimeException("Product not found with id " + id));
 
-        return modelMapper.map(product, ProductResponseDTO.class);
+        return mapToResponseDTO(product);
     }
 
-    // UPDATE
     @Override
     public ProductResponseDTO updateProduct(Long id, ProductRequestDTO dto) {
 
@@ -66,15 +75,20 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() ->
                         new RuntimeException("Product not found with id " + id));
 
-        // DTO → Existing Entity (updates only fields from DTO)
         modelMapper.map(dto, existingProduct);
+
+        if (dto.getRetailerId() != null) {
+            Retailer retailer = retailerRepositry.findById(dto.getRetailerId())
+                    .orElseThrow(() ->
+                            new RuntimeException("Retailer not found with id " + dto.getRetailerId()));
+            existingProduct.setRetailer(retailer);
+        }
 
         Product updatedProduct = productRepositry.save(existingProduct);
 
-        return modelMapper.map(updatedProduct, ProductResponseDTO.class);
+        return mapToResponseDTO(updatedProduct);
     }
 
-    // DELETE
     @Override
     public void deleteProduct(Long id) {
 
@@ -83,5 +97,16 @@ public class ProductServiceImpl implements ProductService {
                         new RuntimeException("Product not found with id " + id));
 
         productRepositry.delete(product);
+    }
+
+    private ProductResponseDTO mapToResponseDTO(Product product) {
+
+        ProductResponseDTO response =
+                modelMapper.map(product, ProductResponseDTO.class);
+
+        response.setRetailerId(product.getRetailer().getId());
+        response.setRetailerName(product.getRetailer().getName());
+
+        return response;
     }
 }
