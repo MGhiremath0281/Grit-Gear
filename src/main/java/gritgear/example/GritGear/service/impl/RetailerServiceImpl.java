@@ -1,7 +1,7 @@
 package gritgear.example.GritGear.service.impl;
 
-import gritgear.example.GritGear.dto.RetailerRequestDTO;
-import gritgear.example.GritGear.dto.RetailerResponseDTO;
+import gritgear.example.GritGear.dto.retailer.RetailerRequestDTO;
+import gritgear.example.GritGear.dto.retailer.RetailerResponseDTO;
 import gritgear.example.GritGear.model.Retailer;
 import gritgear.example.GritGear.repositry.RetailerRepositry;
 import gritgear.example.GritGear.service.RetailerService;
@@ -19,8 +19,9 @@ public class RetailerServiceImpl implements RetailerService {
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
-
-    public RetailerServiceImpl(RetailerRepositry retailerRepositry, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public RetailerServiceImpl(RetailerRepositry retailerRepositry,
+                               ModelMapper modelMapper,
+                               PasswordEncoder passwordEncoder) {
         this.retailerRepositry = retailerRepositry;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
@@ -30,48 +31,59 @@ public class RetailerServiceImpl implements RetailerService {
     public RetailerResponseDTO createRetailer(RetailerRequestDTO dto) {
 
         Retailer retailer = modelMapper.map(dto, Retailer.class);
-        retailer.setPassword(passwordEncoder.encode(dto.getPassword()));
-        Retailer saved = retailerRepositry.save(retailer);
-        return modelMapper.map(saved, RetailerResponseDTO.class);
-    }
 
+        retailer.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        Retailer saved = retailerRepositry.save(retailer);
+
+        return mapToResponseDTO(saved);
+    }
 
     @Override
     public RetailerResponseDTO getRetailerById(Long id) {
-        return retailerRepositry.findById(id)
-                .map(retailer -> modelMapper.map(retailer,RetailerResponseDTO.class))
-                .orElse(null);
+
+        Retailer retailer = retailerRepositry.findById(id)
+                .orElseThrow(() -> new RuntimeException("Retailer not found"));
+
+        return mapToResponseDTO(retailer);
     }
 
     @Override
     public List<RetailerResponseDTO> getAllRetailers() {
+
         return retailerRepositry.findAll()
                 .stream()
-                .map(retailer -> modelMapper.map(retailer,RetailerResponseDTO.class))
+                .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public RetailerResponseDTO updateRetailer(Long id, RetailerRequestDTO dto) {
 
-        Retailer existing = retailerRepositry.findById(id).orElse(null);
-        if (existing == null) return null;
+        Retailer existing = retailerRepositry.findById(id)
+                .orElseThrow(() -> new RuntimeException("Retailer not found"));
 
-        existing.setName(dto.getName());
-        existing.setEmail(dto.getEmail());
-        existing.setAddress(dto.getAddress());
-        existing.setPhone(dto.getPhone());
-        existing.setProducts(dto.getProducts());
+        modelMapper.map(dto, existing);
 
-       Retailer updated = retailerRepositry.save(existing);
-       return modelMapper.map(updated,RetailerResponseDTO.class);
+        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            existing.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+
+        Retailer updated = retailerRepositry.save(existing);
+
+        return mapToResponseDTO(updated);
     }
 
     @Override
-    public RetailerResponseDTO deleteRetailer(Long id) {
-        retailerRepositry.deleteById(id);
-        return null;
+    public void deleteRetailer(Long id) {
+
+        Retailer retailer = retailerRepositry.findById(id)
+                .orElseThrow(() -> new RuntimeException("Retailer not found"));
+
+        retailerRepositry.delete(retailer);
     }
 
+    private RetailerResponseDTO mapToResponseDTO(Retailer retailer) {
+        return modelMapper.map(retailer, RetailerResponseDTO.class);
+    }
 }
-

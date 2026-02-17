@@ -8,7 +8,17 @@ public class ProductResponseDTO {
     private Integer quantity;
     private String category;
     private String imageUrl;
-    private String retailer;
+
+    public String getRetailerName() {
+        return retailerName;
+    }
+
+    public void setRetailerName(String retailerName) {
+        this.retailerName = retailerName;
+    }
+
+    private Long retailerId;
+    private String retailerName;
     public Long getId() {
         return id;
     }
@@ -65,11 +75,11 @@ public class ProductResponseDTO {
         this.imageUrl = imageUrl;
     }
 
-    public String getRetailer() {
-        return retailer;
+    public Long getRetailerId() {
+        return retailerId;
     }
 
-    public void setRetailer(String retailer) {
-        this.retailer = retailer;
+    public void setRetailerId(Long retailerId) {
+        this.retailerId = retailerId;
     }
 }

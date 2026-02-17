@@ -7,7 +7,7 @@ public class ProductRequestDTO {
     private Integer quantity;
     private String category;
     private String imageUrl;
-    private String retailer;
+    private Long retailerId;
 
 
     public String getName() {
@@ -58,11 +58,11 @@ public class ProductRequestDTO {
         this.imageUrl = imageUrl;
     }
 
-    public String getRetailer() {
-        return retailer;
+    public Long getRetailerId() {
+        return retailerId;
     }
 
-    public void setRetailer(String retailer) {
-        this.retailer = retailer;
+    public void setRetailerId(Long retailerId) {
+        this.retailerId = retailerId;
     }
 }
