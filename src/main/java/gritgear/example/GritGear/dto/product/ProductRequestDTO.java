@@ -1,4 +1,4 @@
-package gritgear.example.GritGear.dto;
+package gritgear.example.GritGear.dto.product;
 
 public class ProductRequestDTO {
     private String name;

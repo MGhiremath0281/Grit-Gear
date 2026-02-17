@@ -1,5 +1,8 @@
 package gritgear.example.GritGear.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Retailer {
@@ -11,6 +14,10 @@ public class Retailer {
     private String email;
     private String password;
     private String phone;
+
+    @OneToMany(mappedBy = "retailer",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Product> products;
 
     public long getId() {
         return id;
@@ -60,16 +67,15 @@ public class Retailer {
         this.address = address;
     }
 
-    public String getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(String products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 
     private String address;
-    private String products;
 
 
 }

@@ -1,7 +1,7 @@
 package gritgear.example.GritGear.controller;
 
-import gritgear.example.GritGear.dto.ProductResponseDTO;
-import gritgear.example.GritGear.dto.ProductRequestDTO;
+import gritgear.example.GritGear.dto.product.ProductResponseDTO;
+import gritgear.example.GritGear.dto.product.ProductRequestDTO;
 import gritgear.example.GritGear.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

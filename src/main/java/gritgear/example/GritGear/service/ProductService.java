@@ -1,7 +1,7 @@
 package gritgear.example.GritGear.service;
 
-import gritgear.example.GritGear.dto.ProductResponseDTO;
-import gritgear.example.GritGear.dto.ProductRequestDTO;
+import gritgear.example.GritGear.dto.product.ProductResponseDTO;
+import gritgear.example.GritGear.dto.product.ProductRequestDTO;
 
 import java.util.List;
 
