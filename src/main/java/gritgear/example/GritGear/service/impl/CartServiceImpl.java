@@ -1,6 +1,6 @@
 package gritgear.example.GritGear.service.impl;
 
-import gritgear.example.GritGear.dto.CartResponseDTO;
+import gritgear.example.GritGear.dto.cart.CartResponseDTO;
 import gritgear.example.GritGear.model.Cart;
 import gritgear.example.GritGear.repositry.CartRepositry;
 import gritgear.example.GritGear.service.CartService;
@@ -22,11 +22,6 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponseDTO createCart(Long userId) {
 
-        // Check if cart already exists
-        cartRepository.findByUserId(userId).ifPresent(cart -> {
-            throw new RuntimeException("Cart already exists for userId: " + userId);
-        });
-
         Cart cart = new Cart();
         cart.setUserId(userId);
 
@@ -40,7 +35,7 @@ public class CartServiceImpl implements CartService {
 
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() ->
-                        new RuntimeException("Cart not found for userId: " + userId));
+                        new RuntimeException("Cart not found for user: " + userId));
 
         return modelMapper.map(cart, CartResponseDTO.class);
     }
@@ -50,12 +45,12 @@ public class CartServiceImpl implements CartService {
 
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() ->
-                        new RuntimeException("Cart not found for userId: " + userId));
+                        new RuntimeException("Cart not found for user: " + userId));
 
-        cart.setCartItems(null);  // or ""
+        cart.getCartItems().clear();
+
         cartRepository.save(cart);
     }
-
 
     @Override
     public void deleteCart(Long id) {

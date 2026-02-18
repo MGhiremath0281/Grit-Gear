@@ -1,6 +1,6 @@
 package gritgear.example.GritGear.service;
 
-import gritgear.example.GritGear.dto.CartResponseDTO;
+import gritgear.example.GritGear.dto.cart.CartResponseDTO;
 
 public interface CartService {
 
