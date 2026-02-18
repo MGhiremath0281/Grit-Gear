@@ -5,7 +5,7 @@ public class ProductRequestDTO {
     private String description;
     private Double price;
     private Integer quantity;
-    private String category;
+    private Long categoryId;
     private String imageUrl;
     private Long retailerId;
 
@@ -42,12 +42,12 @@ public class ProductRequestDTO {
         this.quantity = quantity;
     }
 
-    public String getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getImageUrl() {

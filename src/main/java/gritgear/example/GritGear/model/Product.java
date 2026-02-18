@@ -12,8 +12,19 @@ public class Product {
     private String description;
     private Double price;
     private Integer quantity;
-    private String category;
     private String imageUrl;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "retailer_id",nullable = false)
@@ -59,13 +70,7 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public String getCategory() {
-        return category;
-    }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
     public String getImageUrl() {
         return imageUrl;

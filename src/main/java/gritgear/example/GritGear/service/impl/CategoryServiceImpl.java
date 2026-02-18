@@ -1,9 +1,8 @@
 package gritgear.example.GritGear.service.impl;
 
-import gritgear.example.GritGear.dto.CategoryRequestDTO;
-import gritgear.example.GritGear.dto.CategoryResponseDTO;
+import gritgear.example.GritGear.dto.category.CategoryRequestDTO;
+import gritgear.example.GritGear.dto.category.CategoryResponseDTO;
 import gritgear.example.GritGear.model.Category;
-import gritgear.example.GritGear.model.Retailer;
 import gritgear.example.GritGear.repositry.CategoryRepositry;
 import gritgear.example.GritGear.service.CategoryService;
 import org.modelmapper.ModelMapper;

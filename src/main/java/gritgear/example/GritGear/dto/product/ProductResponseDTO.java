@@ -6,7 +6,8 @@ public class ProductResponseDTO {
     private String description;
     private Double price;
     private Integer quantity;
-    private String category;
+    private Long categoryId;
+    private String categoryName;
     private String imageUrl;
 
     public String getRetailerName() {
@@ -59,12 +60,20 @@ public class ProductResponseDTO {
         this.quantity = quantity;
     }
 
-    public String getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getImageUrl() {
