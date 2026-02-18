@@ -1,7 +1,7 @@
 package gritgear.example.GritGear.controller;
 
-import gritgear.example.GritGear.dto.CartItemRequestDTO;
-import gritgear.example.GritGear.dto.CartItemResponseDTO;
+import gritgear.example.GritGear.dto.cartitem.CartItemRequestDTO;
+import gritgear.example.GritGear.dto.cartitem.CartItemResponseDTO;
 import gritgear.example.GritGear.service.CartItemService;
 import org.springframework.web.bind.annotation.*;
 

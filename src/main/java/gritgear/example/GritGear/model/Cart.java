@@ -1,9 +1,7 @@
 package gritgear.example.GritGear.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Cart {
@@ -13,7 +11,11 @@ public class Cart {
     private Long id;
 
     private Long userId;
-    private String cartItems;
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems;
+
+    // getters & setters
 
     public Long getId() {
         return id;
@@ -31,11 +33,11 @@ public class Cart {
         this.userId = userId;
     }
 
-    public String getCartItems() {
+    public List<CartItem> getCartItems() {
         return cartItems;
     }
 
-    public void setCartItems(String cartItems) {
+    public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
     }
 }
