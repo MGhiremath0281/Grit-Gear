@@ -4,7 +4,17 @@ import java.math.BigDecimal;
 
 public class OrderItemRequestDTO {
 
+    private Long orderId;
     private String productName;
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
     private Integer quantity;
     private BigDecimal priceAtPurchase;
 
