@@ -16,4 +16,6 @@ public interface OrderService {
     OrderResponseDTO updateOrder(Long id, OrderRequestDTO dto);
 
     void deleteOrder(Long id);
+    OrderResponseDTO checkoutFromCart(Long userId);
+
 }

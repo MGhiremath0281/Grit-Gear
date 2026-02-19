@@ -2,6 +2,7 @@ package gritgear.example.GritGear.service.impl;
 
 import gritgear.example.GritGear.dto.order.*;
 import gritgear.example.GritGear.model.*;
+import gritgear.example.GritGear.repositry.CartRepositry;
 import gritgear.example.GritGear.repositry.OrderRepositry;
 import gritgear.example.GritGear.repositry.ProductRepositry;
 import gritgear.example.GritGear.repositry.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,15 +23,17 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final ProductRepositry productRepository;
     private final ModelMapper modelMapper;
+    private final CartRepositry cartRepositry;
 
     public OrderServiceImpl(OrderRepositry orderRepository,
                             UserRepository userRepository,
                             ProductRepositry productRepository,
-                            ModelMapper modelMapper) {
+                            ModelMapper modelMapper, CartRepositry cartRepositry) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.modelMapper = modelMapper;
+        this.cartRepositry = cartRepositry;
     }
 
     @Override
@@ -123,6 +127,67 @@ public class OrderServiceImpl implements OrderService {
 
         orderRepository.delete(order);
     }
+
+    @Override
+    public OrderResponseDTO checkoutFromCart(Long userId) {
+
+        // 1️⃣ Fetch Cart
+        Cart cart = cartRepositry.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Cart not found for user id " + userId));
+
+        if (cart.getCartItems().isEmpty()) {
+            throw new RuntimeException("Cart is empty. Cannot checkout.");
+        }
+
+        // 2️⃣ Create Order
+        Order order = new Order();
+        order.setUser(cart.getUser());
+        order.setStatus("CREATED");
+
+        List<OrderItem> orderItems = new ArrayList<>();
+        BigDecimal totalAmount = BigDecimal.ZERO;
+
+        // 3️⃣ Convert CartItems → OrderItems
+        for (CartItem cartItem : cart.getCartItems()) {
+
+            Product product = cartItem.getProduct();
+
+            if (product.getQuantity() < cartItem.getQuantity()) {
+                throw new RuntimeException("Insufficient stock for product: " + product.getName());
+            }
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            orderItem.setProduct(product);
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setPriceAtPurchase(product.getPrice());
+
+            // subtotal = price × quantity
+            BigDecimal subtotal = product.getPrice()
+                    .multiply(BigDecimal.valueOf(cartItem.getQuantity()));
+
+            totalAmount = totalAmount.add(subtotal);
+
+            // reduce stock
+            product.setQuantity(product.getQuantity() - cartItem.getQuantity());
+
+            orderItems.add(orderItem);
+        }
+
+        order.setOrderItems(orderItems);
+        order.setTotalAmount(totalAmount);
+
+        // 4️⃣ Save Order
+        Order savedOrder = orderRepository.save(order);
+
+        // 5️⃣ Clear Cart
+        cart.getCartItems().clear();
+        cartRepositry.save(cart);
+
+        // 6️⃣ Return Response
+        return mapToResponse(savedOrder);
+    }
+
 
     private OrderResponseDTO mapToResponse(Order order) {
         return modelMapper.map(order, OrderResponseDTO.class);
