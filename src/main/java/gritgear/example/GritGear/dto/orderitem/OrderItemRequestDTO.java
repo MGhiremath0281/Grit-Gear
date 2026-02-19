@@ -1,32 +1,19 @@
 package gritgear.example.GritGear.dto.orderitem;
 
 import java.math.BigDecimal;
-
 public class OrderItemRequestDTO {
 
-    private Long orderId;
-    private String productName;
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
+    private Long productId;
     private Integer quantity;
-    private BigDecimal priceAtPurchase;
 
-    public OrderItemRequestDTO() {
+    public OrderItemRequestDTO() {}
+
+    public Long getProductId() {
+        return productId;
     }
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public Integer getQuantity() {
@@ -35,13 +22,5 @@ public class OrderItemRequestDTO {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public BigDecimal getPriceAtPurchase() {
-        return priceAtPurchase;
-    }
-
-    public void setPriceAtPurchase(BigDecimal priceAtPurchase) {
-        this.priceAtPurchase = priceAtPurchase;
     }
 }

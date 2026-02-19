@@ -49,6 +49,7 @@ public class ProductServiceImpl implements ProductService {
         product.setImageUrl(dto.getImageUrl());
         product.setRetailer(retailer);
 
+
         Product saved = productRepositry.save(product);
 
         return mapToResponseDTO(saved);
