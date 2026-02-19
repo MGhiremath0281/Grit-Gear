@@ -11,7 +11,10 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String productName;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
 
     private Integer quantity;
 
@@ -23,12 +26,12 @@ public class OrderItem {
         this.id = id;
     }
 
-    public String getProductName() {
-        return productName;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Integer getQuantity() {

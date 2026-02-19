@@ -2,6 +2,8 @@ package gritgear.example.GritGear.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 public class Product {
 
@@ -10,7 +12,7 @@ public class Product {
     private Long id;
     private String name;
     private String description;
-    private Double price;
+    private BigDecimal price;
     private Integer quantity;
     private String imageUrl;
 
@@ -54,11 +56,11 @@ public class Product {
         this.description = description;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

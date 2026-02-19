@@ -1,11 +1,13 @@
 package gritgear.example.GritGear.dto.cartitem;
 
+import java.math.BigDecimal;
+
 public class CartItemResponseDTO {
 
     private Long cartId;
     private Long productId;
     private String productName;
-    private Double productPrice;
+    private BigDecimal productPrice;
     private Integer quantity;
 
     public Long getCartId() {
@@ -32,11 +34,11 @@ public class CartItemResponseDTO {
         this.productName = productName;
     }
 
-    public Double getProductPrice() {
+    public BigDecimal getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(Double productPrice) {
+    public void setProductPrice(BigDecimal productPrice) {
         this.productPrice = productPrice;
     }
 
