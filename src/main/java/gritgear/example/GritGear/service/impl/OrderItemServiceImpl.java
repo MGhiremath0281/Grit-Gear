@@ -2,37 +2,47 @@ package gritgear.example.GritGear.service.impl;
 
 import gritgear.example.GritGear.dto.orderitem.OrderItemRequestDTO;
 import gritgear.example.GritGear.dto.orderitem.OrderItemResponseDTO;
+import gritgear.example.GritGear.model.Order;
 import gritgear.example.GritGear.model.OrderItem;
 import gritgear.example.GritGear.repositry.OrderItemRepositry;
+import gritgear.example.GritGear.repositry.OrderRepositry;
 import gritgear.example.GritGear.service.OrderItemService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderItemServiceImpl implements OrderItemService {
 
     private final OrderItemRepositry orderItemRepositry;
+    private final OrderRepositry orderRepository;
     private final ModelMapper modelMapper;
 
     public OrderItemServiceImpl(OrderItemRepositry orderItemRepositry,
-                                ModelMapper modelMapper) {
+                                OrderRepositry orderRepository, ModelMapper modelMapper) {
         this.orderItemRepositry = orderItemRepositry;
+        this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public OrderItemResponseDTO addItem(OrderItemRequestDTO dto) {
 
-        // DTO → Entity
-        OrderItem orderItem = modelMapper.map(dto, OrderItem.class);
+        Order order = orderRepository.findById(dto.getOrderId())
+                .orElseThrow(() ->
+                        new RuntimeException("Order not found"));
 
-        // Save entity
+        OrderItem orderItem = new OrderItem();
+        orderItem.setProductName(dto.getProductName());
+        orderItem.setQuantity(dto.getQuantity());
+        orderItem.setPriceAtPurchase(dto.getPriceAtPurchase());
+        orderItem.setOrder(order);
+
         OrderItem saved = orderItemRepositry.save(orderItem);
 
-        // Entity → ResponseDTO
-        return modelMapper.map(saved, OrderItemResponseDTO.class);
+        return mapToResponse(saved);
     }
 
     @Override
@@ -42,12 +52,13 @@ public class OrderItemServiceImpl implements OrderItemService {
                 .orElseThrow(() ->
                         new RuntimeException("Order item not found"));
 
-        // Update existing entity using DTO
-        modelMapper.map(dto, existing);
+        existing.setProductName(dto.getProductName());
+        existing.setQuantity(dto.getQuantity());
+        existing.setPriceAtPurchase(dto.getPriceAtPurchase());
 
         OrderItem updated = orderItemRepositry.save(existing);
 
-        return modelMapper.map(updated, OrderItemResponseDTO.class);
+        return mapToResponse(updated);
     }
 
     @Override
@@ -57,7 +68,7 @@ public class OrderItemServiceImpl implements OrderItemService {
                 .orElseThrow(() ->
                         new RuntimeException("Order item not found"));
 
-        return modelMapper.map(orderItem, OrderItemResponseDTO.class);
+        return mapToResponse(orderItem);
     }
 
     @Override
@@ -65,9 +76,8 @@ public class OrderItemServiceImpl implements OrderItemService {
 
         return orderItemRepositry.findAll()
                 .stream()
-                .map(orderItem ->
-                        modelMapper.map(orderItem, OrderItemResponseDTO.class))
-                .toList();
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -79,4 +89,9 @@ public class OrderItemServiceImpl implements OrderItemService {
 
         orderItemRepositry.delete(existing);
     }
+
+    private OrderItemResponseDTO mapToResponse(OrderItem item) {
+        return modelMapper.map(item, OrderItemResponseDTO.class);
+    }
+
 }
