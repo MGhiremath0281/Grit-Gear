@@ -3,6 +3,7 @@ package gritgear.example.GritGear.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -12,9 +13,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    private String orderItems;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
 
     private BigDecimal totalAmount;
 
@@ -22,27 +26,27 @@ public class Order {
 
     private LocalDateTime createdAt;
 
-    public Order() {
-        this.createdAt = LocalDateTime.now();
-    }
-
     public Long getId() {
         return id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public User getUser() {
+        return user;
     }
 
-    public String getOrderItems() {
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<OrderItem> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(String orderItems) {
+    public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 
@@ -65,8 +69,12 @@ public class Order {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
+    public Order() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

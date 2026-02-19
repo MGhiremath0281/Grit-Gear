@@ -1,7 +1,7 @@
 package gritgear.example.GritGear.service.impl;
 
-import gritgear.example.GritGear.dto.OrderRequestDTO;
-import gritgear.example.GritGear.dto.OrderResponseDTO;
+import gritgear.example.GritGear.dto.order.OrderRequestDTO;
+import gritgear.example.GritGear.dto.order.OrderResponseDTO;
 import gritgear.example.GritGear.model.Order;
 import gritgear.example.GritGear.repositry.OrderRepositry;
 import gritgear.example.GritGear.service.OrderService;
