@@ -1,11 +1,13 @@
 package gritgear.example.GritGear.service.impl;
 
-import gritgear.example.GritGear.dto.order.OrderRequestDTO;
-import gritgear.example.GritGear.dto.order.OrderResponseDTO;
+import gritgear.example.GritGear.dto.order.*;
+import gritgear.example.GritGear.dto.orderitem.OrderItemResponseDTO;
 import gritgear.example.GritGear.model.Order;
+import gritgear.example.GritGear.model.OrderItem;
+import gritgear.example.GritGear.model.User;
 import gritgear.example.GritGear.repositry.OrderRepositry;
+import gritgear.example.GritGear.repositry.UserRepository;
 import gritgear.example.GritGear.service.OrderService;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,27 +18,40 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepositry orderRepository;
-    private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
     public OrderServiceImpl(OrderRepositry orderRepository,
-                            ModelMapper modelMapper) {
-        this.orderRepository= orderRepository;
-        this.modelMapper = modelMapper;
+                            UserRepository userRepository) {
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public OrderResponseDTO createOrder(OrderRequestDTO dto) {
 
-        // Convert DTO → Entity
-        Order order = modelMapper.map(dto, Order.class);
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        Order order = new Order();
+        order.setUser(user);
         order.setStatus("PENDING");
         order.setCreatedAt(LocalDateTime.now());
+        order.setTotalAmount(dto.getTotalAmount());
+
+        List<OrderItem> items = dto.getOrderItems().stream().map(itemDto -> {
+            OrderItem item = new OrderItem();
+            item.setProductName(itemDto.getProductName());
+            item.setQuantity(itemDto.getQuantity());
+            item.setPriceAtPurchase(itemDto.getPriceAtPurchase());
+            item.setOrder(order);   // VERY IMPORTANT
+            return item;
+        }).collect(Collectors.toList());
+
+        order.setOrderItems(items);
 
         Order savedOrder = orderRepository.save(order);
 
-        // Convert Entity → ResponseDTO
-        return modelMapper.map(savedOrder, OrderResponseDTO.class);
+        return mapToResponse(savedOrder);
     }
 
     @Override
@@ -44,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
 
         return orderRepository.findAll()
                 .stream()
-                .map(order -> modelMapper.map(order, OrderResponseDTO.class))
+                .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
@@ -54,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
 
-        return modelMapper.map(order, OrderResponseDTO.class);
+        return mapToResponse(order);
     }
 
     @Override
@@ -63,12 +78,12 @@ public class OrderServiceImpl implements OrderService {
         Order existingOrder = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
 
-        // Map updated fields
-        modelMapper.map(dto, existingOrder);
+        existingOrder.setTotalAmount(dto.getTotalAmount());
+        existingOrder.setStatus("UPDATED");
 
         Order updatedOrder = orderRepository.save(existingOrder);
 
-        return modelMapper.map(updatedOrder, OrderResponseDTO.class);
+        return mapToResponse(updatedOrder);
     }
 
     @Override
@@ -78,5 +93,29 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
 
         orderRepository.delete(order);
+    }
+
+    private OrderResponseDTO mapToResponse(Order order) {
+
+        OrderResponseDTO response = new OrderResponseDTO();
+        response.setId(order.getId());
+        response.setUserId(order.getUser().getId());
+        response.setTotalAmount(order.getTotalAmount());
+        response.setStatus(order.getStatus());
+        response.setCreatedAt(order.getCreatedAt());
+
+        List<OrderItemResponseDTO> itemResponses =
+                order.getOrderItems().stream().map(item -> {
+                    OrderItemResponseDTO itemDto = new OrderItemResponseDTO();
+                    itemDto.setId(item.getId());
+                    itemDto.setProductName(item.getProductName());
+                    itemDto.setQuantity(item.getQuantity());
+                    itemDto.setPriceAtPurchase(item.getPriceAtPurchase());
+                    return itemDto;
+                }).collect(Collectors.toList());
+
+        response.setOrderItems(itemResponses);
+
+        return response;
     }
 }
