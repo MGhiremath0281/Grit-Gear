@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import gritgear.example.GritGear.dto.UserResponseDTO;
-import gritgear.example.GritGear.dto.UserRequestDTO;
-import gritgear.example.GritGear.model.User;
+import gritgear.example.GritGear.dto.user.UserResponseDTO;
+import gritgear.example.GritGear.dto.user.UserRequestDTO;
 import gritgear.example.GritGear.service.UserService;
 import lombok.RequiredArgsConstructor;
 

@@ -7,12 +7,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import gritgear.example.GritGear.dto.UserRequestDTO;
-import gritgear.example.GritGear.dto.UserResponseDTO;
+import gritgear.example.GritGear.dto.user.UserRequestDTO;
+import gritgear.example.GritGear.dto.user.UserResponseDTO;
 import gritgear.example.GritGear.model.User;
 import gritgear.example.GritGear.repositry.UserRepository;
 import gritgear.example.GritGear.service.UserService;
-import lombok.RequiredArgsConstructor;
 
 @Service
 public class UserServiceImpl implements UserService {

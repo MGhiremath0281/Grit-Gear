@@ -1,9 +1,8 @@
 package gritgear.example.GritGear.service;
 
-import gritgear.example.GritGear.model.User;
 import java.util.List;
-import gritgear.example.GritGear.dto.UserRequestDTO;
-import gritgear.example.GritGear.dto.UserResponseDTO;
+import gritgear.example.GritGear.dto.user.UserRequestDTO;
+import gritgear.example.GritGear.dto.user.UserResponseDTO;
 
 public interface UserService {
 
