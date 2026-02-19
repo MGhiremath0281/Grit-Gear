@@ -1,7 +1,7 @@
 package gritgear.example.GritGear.service;
 
-import gritgear.example.GritGear.dto.OrderItemRequestDTO;
-import gritgear.example.GritGear.dto.OrderItemResponseDTO;
+import gritgear.example.GritGear.dto.orderitem.OrderItemRequestDTO;
+import gritgear.example.GritGear.dto.orderitem.OrderItemResponseDTO;
 import java.util.List;
 
 public interface OrderItemService {

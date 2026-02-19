@@ -1,20 +1,22 @@
 package gritgear.example.GritGear.dto.order;
 
+import gritgear.example.GritGear.dto.orderitem.OrderItemResponseDTO;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class OrderResponseDTO {
 
     private Long id;
     private Long userId;
-    private String orderItems;
+    private List<OrderItemResponseDTO> orderItems;
     private BigDecimal totalAmount;
     private String status;
     private LocalDateTime createdAt;
 
     public OrderResponseDTO() {
     }
-
 
     public Long getId() {
         return id;
@@ -32,11 +34,11 @@ public class OrderResponseDTO {
         this.userId = userId;
     }
 
-    public String getOrderItems() {
+    public List<OrderItemResponseDTO> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(String orderItems) {
+    public void setOrderItems(List<OrderItemResponseDTO> orderItems) {
         this.orderItems = orderItems;
     }
 
