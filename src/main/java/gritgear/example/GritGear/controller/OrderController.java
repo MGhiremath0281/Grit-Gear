@@ -1,7 +1,7 @@
 package gritgear.example.GritGear.controller;
 
-import gritgear.example.GritGear.dto.OrderRequestDTO;
-import gritgear.example.GritGear.dto.OrderResponseDTO;
+import gritgear.example.GritGear.dto.order.OrderRequestDTO;
+import gritgear.example.GritGear.dto.order.OrderResponseDTO;
 import gritgear.example.GritGear.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 

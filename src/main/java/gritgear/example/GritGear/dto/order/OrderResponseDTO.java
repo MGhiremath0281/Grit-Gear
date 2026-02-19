@@ -1,4 +1,4 @@
-package gritgear.example.GritGear.dto;
+package gritgear.example.GritGear.dto.order;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
