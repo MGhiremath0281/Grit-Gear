@@ -76,7 +76,8 @@ public class GlobalExceptionHandler {
             CartitemNotFoundException.class,
             OrderNotFoundException.class,
             CategorynotFoundException.class,
-            OderItemNotFoundException.class
+            OderItemNotFoundException.class,
+            ProductNotFoundException.class
     })
     public ResponseEntity<ErrorResponse> handleNotFoundExceptions(
             RuntimeException ex,
