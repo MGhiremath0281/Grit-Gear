@@ -16,23 +16,25 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    /**
-     * Handles validation errors (e.g., @Valid failed)
-     * -> Returns HTTP 400 (Bad Request)
-     */
+
+    // -------------------- VALIDATION ERRORS --------------------
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+
         Map<String, String> errors = new HashMap<>();
 
         ex.getBindingResult().getFieldErrors()
-                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+                .forEach(error ->
+                        errors.put(error.getField(), error.getDefaultMessage())
+                );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
-    /**
-     * Handles malformed JSON or invalid data types in request bodies.
-     * Returns HTTP 400 (Bad Request).
-     */
+
+    // -------------------- MALFORMED JSON --------------------
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(
             HttpMessageNotReadableException ex,
@@ -44,23 +46,14 @@ public class GlobalExceptionHandler {
                 ex.getMostSpecificCause().getMessage() != null &&
                 ex.getMostSpecificCause().getMessage().contains("Cannot deserialize")) {
 
-            detail = "Invalid data type provided. Please check field values (e.g., ensure numbers are not sent as strings).";
+            detail = "Invalid data type provided. Please check field values.";
         }
 
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                detail,
-                request.getRequestURI()
-        );
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, detail, request);
     }
-    /**
-     * Handles missing required query parameters.
-     * Returns HTTP 400 (Bad Request).
-     */
+
+    // -------------------- MISSING QUERY PARAM --------------------
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> handleMissingParams(
             MissingServletRequestParameterException ex,
@@ -71,104 +64,42 @@ public class GlobalExceptionHandler {
                 ex.getParameterName()
         );
 
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, message, request);
+    }
+
+    // -------------------- NOT FOUND EXCEPTIONS --------------------
+
+    @ExceptionHandler({
+            UserNotFoundException.class,
+            RetailernotFoundException.class,
+            CartNotFoundException.class,
+            CartitemNotFoundException.class,
+            OrderNotFoundException.class,
+            CategorynotFoundException.class,
+            OderItemNotFoundException.class
+    })
+    public ResponseEntity<ErrorResponse> handleNotFoundExceptions(
+            RuntimeException ex,
+            HttpServletRequest request) {
+
+        return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request);
+    }
+
+    // -------------------- COMMON BUILDER METHOD --------------------
+
+    private ResponseEntity<ErrorResponse> buildErrorResponse(
+            HttpStatus status,
+            String message,
+            HttpServletRequest request) {
+
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                status.value(),
+                status.getReasonPhrase(),
                 message,
                 request.getRequestURI()
         );
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFoundException(
-            UserNotFoundException ex,
-            HttpServletRequest request) {
-
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
-    @ExceptionHandler(RetailernotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleRetailerNotFoundException(
-            UserNotFoundException ex,
-            HttpServletRequest request) {
-
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
-    @ExceptionHandler(CartNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleCartNotFoundException(
-            UserNotFoundException ex,
-            HttpServletRequest request) {
-
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
-    @ExceptionHandler(CartitemNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleCartItemNotFoundException(
-            UserNotFoundException ex,
-            HttpServletRequest request) {
-
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
-    @ExceptionHandler(OrderNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleOrderNotFoundException(
-            UserNotFoundException ex,
-            HttpServletRequest request) {
-
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-    @ExceptionHandler(CategorynotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleCategeryNotFoundException(
-            UserNotFoundException ex,
-            HttpServletRequest request) {
-
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        return ResponseEntity.status(status).body(error);
     }
 }
