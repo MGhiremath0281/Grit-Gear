@@ -2,6 +2,9 @@ package gritgear.example.GritGear.service.impl;
 
 import gritgear.example.GritGear.dto.product.ProductRequestDTO;
 import gritgear.example.GritGear.dto.product.ProductResponseDTO;
+import gritgear.example.GritGear.exception.CategoryNotFoundException;
+import gritgear.example.GritGear.exception.ProductNotFoundException;
+import gritgear.example.GritGear.exception.RetailerNotFoundException;
 import gritgear.example.GritGear.model.Category;
 import gritgear.example.GritGear.model.Product;
 import gritgear.example.GritGear.model.Retailer;
@@ -24,7 +27,8 @@ public class ProductServiceImpl implements ProductService {
 
     public ProductServiceImpl(ProductRepositry productRepositry,
                               ModelMapper modelMapper,
-                              RetailerRepositry retailerRepositry, CategoryRepositry categoryRepositry) {
+                              RetailerRepositry retailerRepositry,
+                              CategoryRepositry categoryRepositry) {
         this.productRepositry = productRepositry;
         this.modelMapper = modelMapper;
         this.retailerRepositry = retailerRepositry;
@@ -35,10 +39,12 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDTO createProduct(ProductRequestDTO dto) {
 
         Retailer retailer = retailerRepositry.findById(dto.getRetailerId())
-                .orElseThrow(() -> new RuntimeException("Retailer not found"));
+                .orElseThrow(() ->
+                        new RetailerNotFoundException("Retailer not found with id " + dto.getRetailerId()));
 
         Category category = categoryRepositry.findById(dto.getCategoryId())
-                .orElseThrow(()-> new RuntimeException("Category not found"));
+                .orElseThrow(() ->
+                        new CategoryNotFoundException("Category not found with id " + dto.getCategoryId()));
 
         Product product = new Product();
         product.setName(dto.getName());
@@ -49,7 +55,6 @@ public class ProductServiceImpl implements ProductService {
         product.setImageUrl(dto.getImageUrl());
         product.setRetailer(retailer);
 
-
         Product saved = productRepositry.save(product);
 
         return mapToResponseDTO(saved);
@@ -57,7 +62,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponseDTO> getAllProducts() {
-
         return productRepositry.findAll()
                 .stream()
                 .map(this::mapToResponseDTO)
@@ -69,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productRepositry.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Product not found with id " + id));
+                        new ProductNotFoundException("Product not found with id " + id));
 
         return mapToResponseDTO(product);
     }
@@ -79,15 +83,15 @@ public class ProductServiceImpl implements ProductService {
 
         Product existingProduct = productRepositry.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Product not found with id " + id));
+                        new ProductNotFoundException("Product not found with id " + id));
 
         Retailer retailer = retailerRepositry.findById(dto.getRetailerId())
                 .orElseThrow(() ->
-                        new RuntimeException("Retailer not found with id " + dto.getRetailerId()));
+                        new RetailerNotFoundException("Retailer not found with id " + dto.getRetailerId()));
 
         Category category = categoryRepositry.findById(dto.getCategoryId())
                 .orElseThrow(() ->
-                        new RuntimeException("Category not found with id " + dto.getCategoryId()));
+                        new CategoryNotFoundException("Category not found with id " + dto.getCategoryId()));
 
         existingProduct.setName(dto.getName());
         existingProduct.setDescription(dto.getDescription());
@@ -102,13 +106,12 @@ public class ProductServiceImpl implements ProductService {
         return mapToResponseDTO(updatedProduct);
     }
 
-
     @Override
     public void deleteProduct(Long id) {
 
         Product product = productRepositry.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Product not found with id " + id));
+                        new ProductNotFoundException("Product not found with id " + id));
 
         productRepositry.delete(product);
     }
