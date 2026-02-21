@@ -2,6 +2,7 @@ package gritgear.example.GritGear.service.impl;
 
 import gritgear.example.GritGear.dto.retailer.RetailerRequestDTO;
 import gritgear.example.GritGear.dto.retailer.RetailerResponseDTO;
+import gritgear.example.GritGear.exception.RetailernotFoundException;
 import gritgear.example.GritGear.model.Retailer;
 import gritgear.example.GritGear.repositry.RetailerRepositry;
 import gritgear.example.GritGear.service.RetailerService;
@@ -31,7 +32,6 @@ public class RetailerServiceImpl implements RetailerService {
     public RetailerResponseDTO createRetailer(RetailerRequestDTO dto) {
 
         Retailer retailer = modelMapper.map(dto, Retailer.class);
-
         retailer.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         Retailer saved = retailerRepositry.save(retailer);
@@ -43,7 +43,9 @@ public class RetailerServiceImpl implements RetailerService {
     public RetailerResponseDTO getRetailerById(Long id) {
 
         Retailer retailer = retailerRepositry.findById(id)
-                .orElseThrow(() -> new RuntimeException("Retailer not found"));
+                .orElseThrow(() ->
+                        new RetailernotFoundException("Retailer not found with id: " + id)
+                );
 
         return mapToResponseDTO(retailer);
     }
@@ -61,7 +63,9 @@ public class RetailerServiceImpl implements RetailerService {
     public RetailerResponseDTO updateRetailer(Long id, RetailerRequestDTO dto) {
 
         Retailer existing = retailerRepositry.findById(id)
-                .orElseThrow(() -> new RuntimeException("Retailer not found"));
+                .orElseThrow(() ->
+                        new RetailernotFoundException("Retailer not found with id: " + id)
+                );
 
         modelMapper.map(dto, existing);
 
@@ -77,10 +81,11 @@ public class RetailerServiceImpl implements RetailerService {
     @Override
     public void deleteRetailer(Long id) {
 
-        Retailer retailer = retailerRepositry.findById(id)
-                .orElseThrow(() -> new RuntimeException("Retailer not found"));
+        if (!retailerRepositry.existsById(id)) {
+            throw new RetailernotFoundException("Retailer not found with id: " + id);
+        }
 
-        retailerRepositry.delete(retailer);
+        retailerRepositry.deleteById(id);
     }
 
     private RetailerResponseDTO mapToResponseDTO(Retailer retailer) {
