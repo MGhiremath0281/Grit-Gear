@@ -2,6 +2,8 @@ package gritgear.example.GritGear.service.impl;
 
 import gritgear.example.GritGear.dto.cartitem.CartItemRequestDTO;
 import gritgear.example.GritGear.dto.cartitem.CartItemResponseDTO;
+import gritgear.example.GritGear.exception.CartNotFoundException;
+import gritgear.example.GritGear.exception.ProductNotFoundException;
 import gritgear.example.GritGear.model.Cart;
 import gritgear.example.GritGear.model.CartItem;
 import gritgear.example.GritGear.model.Product;
@@ -37,11 +39,11 @@ public class CartItemServiceImpl implements CartItemService {
 
         Cart cart = cartRepository.findById(dto.getCartId())
                 .orElseThrow(() ->
-                        new RuntimeException("Cart not found with id " + dto.getCartId()));
+                        new CartNotFoundException("Cart not found with id " + dto.getCartId()));
 
         Product product = productRepository.findById(dto.getProductId())
                 .orElseThrow(() ->
-                        new RuntimeException("Product not found with id " + dto.getProductId()));
+                        new ProductNotFoundException("Product not found with id " + dto.getProductId()));
 
         CartItem cartItem = new CartItem();
         cartItem.setCart(cart);
@@ -67,7 +69,7 @@ public class CartItemServiceImpl implements CartItemService {
 
         CartItem cartItem = cartItemRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("CartItem not found with id: " + id));
+                        new CartNotFoundException("CartItem not found with id: " + id));
 
         return mapToResponse(cartItem);
     }
@@ -77,11 +79,11 @@ public class CartItemServiceImpl implements CartItemService {
 
         CartItem existingItem = cartItemRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("CartItem not found with id: " + id));
+                        new CartNotFoundException("CartItem not found with id: " + id));
 
         Product product = productRepository.findById(dto.getProductId())
                 .orElseThrow(() ->
-                        new RuntimeException("Product not found with id " + dto.getProductId()));
+                        new ProductNotFoundException("Product not found with id " + dto.getProductId()));
 
         existingItem.setProduct(product);
         existingItem.setQuantity(dto.getQuantity());
@@ -96,7 +98,7 @@ public class CartItemServiceImpl implements CartItemService {
 
         CartItem cartItem = cartItemRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("CartItem not found with id: " + id));
+                        new CartNotFoundException("CartItem not found with id: " + id));
 
         cartItemRepository.delete(cartItem);
     }
