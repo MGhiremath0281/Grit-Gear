@@ -2,9 +2,9 @@ package gritgear.example.GritGear.service.impl;
 
 import gritgear.example.GritGear.dto.product.ProductRequestDTO;
 import gritgear.example.GritGear.dto.product.ProductResponseDTO;
-import gritgear.example.GritGear.exception.CategoryNotFoundException;
+import gritgear.example.GritGear.exception.CategorynotFoundException;
 import gritgear.example.GritGear.exception.ProductNotFoundException;
-import gritgear.example.GritGear.exception.RetailerNotFoundException;
+import gritgear.example.GritGear.exception.RetailernotFoundException;
 import gritgear.example.GritGear.model.Category;
 import gritgear.example.GritGear.model.Product;
 import gritgear.example.GritGear.model.Retailer;
@@ -40,11 +40,11 @@ public class ProductServiceImpl implements ProductService {
 
         Retailer retailer = retailerRepositry.findById(dto.getRetailerId())
                 .orElseThrow(() ->
-                        new RetailerNotFoundException("Retailer not found with id " + dto.getRetailerId()));
+                        new RetailernotFoundException("Retailer not found with id " + dto.getRetailerId()));
 
         Category category = categoryRepositry.findById(dto.getCategoryId())
                 .orElseThrow(() ->
-                        new CategoryNotFoundException("Category not found with id " + dto.getCategoryId()));
+                        new CategorynotFoundException("Category not found with id " + dto.getCategoryId()));
 
         Product product = new Product();
         product.setName(dto.getName());
@@ -87,11 +87,11 @@ public class ProductServiceImpl implements ProductService {
 
         Retailer retailer = retailerRepositry.findById(dto.getRetailerId())
                 .orElseThrow(() ->
-                        new RetailerNotFoundException("Retailer not found with id " + dto.getRetailerId()));
+                        new RetailernotFoundException("Retailer not found with id " + dto.getRetailerId()));
 
         Category category = categoryRepositry.findById(dto.getCategoryId())
                 .orElseThrow(() ->
-                        new CategoryNotFoundException("Category not found with id " + dto.getCategoryId()));
+                        new CategorynotFoundException("Category not found with id " + dto.getCategoryId()));
 
         existingProduct.setName(dto.getName());
         existingProduct.setDescription(dto.getDescription());
