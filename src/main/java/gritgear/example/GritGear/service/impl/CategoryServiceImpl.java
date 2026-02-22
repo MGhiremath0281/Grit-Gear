@@ -2,6 +2,7 @@ package gritgear.example.GritGear.service.impl;
 
 import gritgear.example.GritGear.dto.category.CategoryRequestDTO;
 import gritgear.example.GritGear.dto.category.CategoryResponseDTO;
+import gritgear.example.GritGear.exception.CategorynotFoundException;
 import gritgear.example.GritGear.model.Category;
 import gritgear.example.GritGear.repositry.CategoryRepositry;
 import gritgear.example.GritGear.service.CategoryService;
@@ -35,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponseDTO getCategorybyId(Long id) {
 
         Category category = categoryRepositry.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category NOT FOUND with id: " + id));
+                .orElseThrow(() -> new CategorynotFoundException("Category NOT FOUND with id: " + id));
 
         return modelMapper.map(category, CategoryResponseDTO.class);
     }
@@ -53,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO dto) {
 
         Category existing = categoryRepositry.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category NOT FOUND with id: " + id));
+                .orElseThrow(() -> new CategorynotFoundException("Category NOT FOUND with id: " + id));
 
         existing.setProname(dto.getProname());
         existing.setDescription(dto.getDescription());
