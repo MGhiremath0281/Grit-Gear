@@ -1,6 +1,7 @@
 package gritgear.example.GritGear.service.impl;
 
 import gritgear.example.GritGear.dto.cart.CartResponseDTO;
+import gritgear.example.GritGear.exception.CartNotFoundException;
 import gritgear.example.GritGear.model.Cart;
 import gritgear.example.GritGear.model.User;
 import gritgear.example.GritGear.repositry.CartRepositry;
@@ -28,7 +29,7 @@ public class CartServiceImpl implements CartService {
     public CartResponseDTO createCart(Long userId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new CartNotFoundException("User not found"));
 
         Cart cart = new Cart();
         cart.setUser(user);
@@ -44,7 +45,7 @@ public class CartServiceImpl implements CartService {
 
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() ->
-                        new RuntimeException("Cart not found for user: " + userId));
+                        new CartNotFoundException("Cart not found for user: " + userId));
 
         return modelMapper.map(cart, CartResponseDTO.class);
     }
@@ -54,7 +55,7 @@ public class CartServiceImpl implements CartService {
 
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(() ->
-                        new RuntimeException("Cart not found for user: " + userId));
+                        new CartNotFoundException("Cart not found for user: " + userId));
 
         cart.getCartItems().clear();
 
@@ -66,7 +67,7 @@ public class CartServiceImpl implements CartService {
 
         Cart cart = cartRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Cart not found with id: " + id));
+                        new CartNotFoundException("Cart not found with id: " + id));
 
         cartRepository.delete(cart);
     }
