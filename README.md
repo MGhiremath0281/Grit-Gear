@@ -61,7 +61,7 @@ GritGear simulates a real-world e-commerce ecosystem with high-concurrency readi
 
 ## 📊 Database Design
 
-The database is architected to be 3NF (Third Normal Form) compliant to ensure data consistency and eliminate redundancy.
+
 ![Database Schema](db.png)
 
 ---
