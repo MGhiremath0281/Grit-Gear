@@ -9,6 +9,9 @@ import gritgear.example.GritGear.repositry.ProductRepositry;
 import gritgear.example.GritGear.repositry.UserRepository;
 import gritgear.example.GritGear.service.OrderService;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,17 +123,17 @@ public class OrderServiceImpl implements OrderService {
      * Returns all orders in the system.
      */
     @Override
-    public List<OrderResponseDTO> getAllOrders() {
+    public Page<OrderResponseDTO> getAllOrders(int page, int size) {
 
-        logger.info("Fetching all orders");
+        logger.info("Fetching orders - page: {}, size: {}", page, size);
 
-        List<Order> orders = orderRepository.findAll();
+        Pageable pageable = PageRequest.of(page, size);
 
-        logger.debug("Total orders found: {}", orders.size());
+        Page<Order> orderPage = orderRepository.findAll(pageable);
 
-        return orders.stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+        logger.debug("Total orders found: {}", orderPage.getTotalElements());
+
+        return orderPage.map(this::mapToResponse);
     }
 
     /**

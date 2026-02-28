@@ -2,14 +2,13 @@ package gritgear.example.GritGear.service;
 
 import gritgear.example.GritGear.dto.order.OrderRequestDTO;
 import gritgear.example.GritGear.dto.order.OrderResponseDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface OrderService {
 
     OrderResponseDTO createOrder(OrderRequestDTO dto);
 
-    List<OrderResponseDTO> getAllOrders();
+    Page<OrderResponseDTO> getAllOrders(int page, int size);
 
     OrderResponseDTO getOrderById(Long id);
 

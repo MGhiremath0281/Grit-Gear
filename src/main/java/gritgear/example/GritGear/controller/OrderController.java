@@ -3,6 +3,7 @@ package gritgear.example.GritGear.controller;
 import gritgear.example.GritGear.dto.order.OrderRequestDTO;
 import gritgear.example.GritGear.dto.order.OrderResponseDTO;
 import gritgear.example.GritGear.service.OrderService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,11 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderResponseDTO> getAllOrders() {
-        return orderService.getAllOrders();
+    public ResponseEntity<Page<OrderResponseDTO>> getAllOrders(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        return ResponseEntity.ok(orderService.getAllOrders(page, size));
     }
 
     @GetMapping("/{id}")
