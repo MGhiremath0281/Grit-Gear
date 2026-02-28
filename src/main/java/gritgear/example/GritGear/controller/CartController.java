@@ -2,6 +2,7 @@ package gritgear.example.GritGear.controller;
 
 import gritgear.example.GritGear.dto.cart.CartResponseDTO;
 import gritgear.example.GritGear.service.CartService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,17 +16,17 @@ public class CartController {
     }
 
     @PostMapping("/user/{userId}")
-    public CartResponseDTO createCart(@PathVariable Long userId) {
+    public CartResponseDTO createCart( @PathVariable Long userId) {
         return cartService.createCart(userId);
     }
 
     @GetMapping("/user/{userId}")
-    public CartResponseDTO getCartByUserId(@PathVariable Long userId) {
+    public CartResponseDTO getCartByUserId( @PathVariable Long userId) {
         return cartService.getCartByUserId(userId);
     }
 
     @DeleteMapping("/user/{userId}/clear")
-    public void clearCart(@PathVariable Long userId) {
+    public void clearCart( @PathVariable Long userId) {
         cartService.clearCart(userId);
     }
 
