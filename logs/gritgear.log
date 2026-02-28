@@ -196,3 +196,242 @@ Consider the following:
 2026-02-28 22:07:28 [SpringApplicationShutdownHook] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2026-02-28 22:07:28 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2026-02-28 22:07:28 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-02-28 23:10:38 [restartedMain] INFO  gritgear.example.GritGear.GritGearApplication - Starting GritGearApplication using Java 23.0.1 with PID 6344 (C:\Users\HP\OneDrive\Desktop\Quantum\target\classes started by HP in C:\Users\HP\OneDrive\Desktop\Quantum)
+2026-02-28 23:10:38 [restartedMain] DEBUG gritgear.example.GritGear.GritGearApplication - Running with Spring Boot v4.0.2, Spring v7.0.3
+2026-02-28 23:10:38 [restartedMain] INFO  gritgear.example.GritGear.GritGearApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-28 23:10:38 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-02-28 23:10:38 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-02-28 23:10:41 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-28 23:10:41 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 185 ms. Found 8 JPA repository interfaces.
+2026-02-28 23:10:43 [restartedMain] INFO  org.springframework.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-02-28 23:10:43 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-02-28 23:10:43 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-02-28 23:10:43 [restartedMain] INFO  org.springframework.boot.web.context.servlet.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 4851 ms
+2026-02-28 23:10:43 [restartedMain] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-02-28 23:10:44 [restartedMain] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.1.Final
+2026-02-28 23:10:45 [restartedMain] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-28 23:10:45 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-02-28 23:10:46 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@833b5
+2026-02-28 23:10:46 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-02-28 23:10:46 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-28 23:10:46 [restartedMain] INFO  org.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/gitgear]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.1
+	Default catalog/schema: gitgear/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-02-28 23:10:49 [restartedMain] INFO  gritgear.example.GritGear.GritGearApplication - Starting GritGearApplication using Java 23.0.1 with PID 5460 (C:\Users\HP\OneDrive\Desktop\Quantum\target\classes started by HP in C:\Users\HP\OneDrive\Desktop\Quantum)
+2026-02-28 23:10:49 [restartedMain] DEBUG gritgear.example.GritGear.GritGearApplication - Running with Spring Boot v4.0.2, Spring v7.0.3
+2026-02-28 23:10:49 [restartedMain] INFO  gritgear.example.GritGear.GritGearApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-28 23:10:49 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-02-28 23:10:49 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-02-28 23:10:51 [restartedMain] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - set client_min_messages = WARNING
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart drop constraint if exists FKg5uhi8vpsuy0lgloxk2h4w5o6
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item drop constraint if exists FK1uobyhgl1wvgt1jpccia8xxs3
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item drop constraint if exists FKjcyd5wv4igqnw413rgxbfu4nv
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item drop constraint if exists FKt4dc2r9nbvbujrljv3e23iibt
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item drop constraint if exists FK551losx9j75ss5d6bfsqvijna
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists orders drop constraint if exists FK32ql8ubntj5uh44ph9659tiih
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product drop constraint if exists FK1mtsbur82frn64de7balymq9s
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product drop constraint if exists FK9ntlod96k0oy2m002vkqynshu
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists cart cascade
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists cart_item cascade
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists category cascade
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists order_item cascade
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists orders cascade
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists product cascade
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists retailer cascade
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists users cascade
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - create table cart (id bigint generated by default as identity, user_id bigint, primary key (id))
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - create table cart_item (quantity integer, cart_id bigint not null, id bigint generated by default as identity, product_id bigint not null, primary key (id))
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - create table category (id bigint generated by default as identity, description varchar(255), proname varchar(255), primary key (id))
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - create table order_item (price_at_purchase numeric(38,2), quantity integer, id bigint generated by default as identity, order_id bigint, product_id bigint, primary key (id))
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - create table orders (total_amount numeric(38,2), created_at timestamp(6), id bigint generated by default as identity, user_id bigint, status varchar(255), primary key (id))
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - create table product (price numeric(38,2), quantity integer, category_id bigint not null, id bigint generated by default as identity, retailer_id bigint not null, description varchar(255), image_url varchar(255), name varchar(255), primary key (id))
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - create table retailer (id bigint generated by default as identity, address varchar(255), email varchar(255), name varchar(255), password varchar(255), phone varchar(255), primary key (id))
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - create table users (active boolean not null, id bigint generated by default as identity, email varchar(255) not null unique, full_name varchar(255) not null, password varchar(255) not null, phone_number varchar(255) not null, role varchar(255) not null, primary key (id))
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart add constraint FKg5uhi8vpsuy0lgloxk2h4w5o6 foreign key (user_id) references users
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item add constraint FK1uobyhgl1wvgt1jpccia8xxs3 foreign key (cart_id) references cart
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item add constraint FKjcyd5wv4igqnw413rgxbfu4nv foreign key (product_id) references product
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item add constraint FKt4dc2r9nbvbujrljv3e23iibt foreign key (order_id) references orders
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item add constraint FK551losx9j75ss5d6bfsqvijna foreign key (product_id) references product
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists orders add constraint FK32ql8ubntj5uh44ph9659tiih foreign key (user_id) references users
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product add constraint FK1mtsbur82frn64de7balymq9s foreign key (category_id) references category
+2026-02-28 23:10:51 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product add constraint FK9ntlod96k0oy2m002vkqynshu foreign key (retailer_id) references retailer
+2026-02-28 23:10:51 [restartedMain] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-28 23:10:52 [restartedMain] INFO  org.springframework.data.jpa.repository.query.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-02-28 23:10:52 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-28 23:10:52 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 322 ms. Found 8 JPA repository interfaces.
+2026-02-28 23:10:53 [restartedMain] WARN  org.springframework.boot.jpa.autoconfigure.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-28 23:10:55 [restartedMain] INFO  org.springframework.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-02-28 23:10:55 [restartedMain] INFO  gritgear.example.GritGear.GritGearApplication - Started GritGearApplication in 18.787 seconds (process running for 20.259)
+2026-02-28 23:10:56 [restartedMain] INFO  org.springframework.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-02-28 23:10:56 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-02-28 23:10:56 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-02-28 23:10:56 [restartedMain] INFO  org.springframework.boot.web.context.servlet.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 6457 ms
+2026-02-28 23:10:56 [restartedMain] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-02-28 23:10:56 [restartedMain] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.1.Final
+2026-02-28 23:10:58 [restartedMain] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-28 23:10:58 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-02-28 23:10:58 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2d5af229
+2026-02-28 23:10:58 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-02-28 23:10:58 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-28 23:10:58 [restartedMain] INFO  org.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/gitgear]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.1
+	Default catalog/schema: gitgear/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-02-28 23:11:02 [restartedMain] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - set client_min_messages = WARNING
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart drop constraint if exists FKg5uhi8vpsuy0lgloxk2h4w5o6
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item drop constraint if exists FK1uobyhgl1wvgt1jpccia8xxs3
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item drop constraint if exists FKjcyd5wv4igqnw413rgxbfu4nv
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item drop constraint if exists FKt4dc2r9nbvbujrljv3e23iibt
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item drop constraint if exists FK551losx9j75ss5d6bfsqvijna
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists orders drop constraint if exists FK32ql8ubntj5uh44ph9659tiih
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product drop constraint if exists FK1mtsbur82frn64de7balymq9s
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product drop constraint if exists FK9ntlod96k0oy2m002vkqynshu
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists cart cascade
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists cart_item cascade
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists category cascade
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists order_item cascade
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists orders cascade
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists product cascade
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists retailer cascade
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists users cascade
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - create table cart (id bigint generated by default as identity, user_id bigint, primary key (id))
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - create table cart_item (quantity integer, cart_id bigint not null, id bigint generated by default as identity, product_id bigint not null, primary key (id))
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - create table category (id bigint generated by default as identity, description varchar(255), proname varchar(255), primary key (id))
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - create table order_item (price_at_purchase numeric(38,2), quantity integer, id bigint generated by default as identity, order_id bigint, product_id bigint, primary key (id))
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - create table orders (total_amount numeric(38,2), created_at timestamp(6), id bigint generated by default as identity, user_id bigint, status varchar(255), primary key (id))
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - create table product (price numeric(38,2), quantity integer, category_id bigint not null, id bigint generated by default as identity, retailer_id bigint not null, description varchar(255), image_url varchar(255), name varchar(255), primary key (id))
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - create table retailer (id bigint generated by default as identity, address varchar(255), email varchar(255), name varchar(255), password varchar(255), phone varchar(255), primary key (id))
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - create table users (active boolean not null, id bigint generated by default as identity, email varchar(255) not null unique, full_name varchar(255) not null, password varchar(255) not null, phone_number varchar(255) not null, role varchar(255) not null, primary key (id))
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart add constraint FKg5uhi8vpsuy0lgloxk2h4w5o6 foreign key (user_id) references users
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item add constraint FK1uobyhgl1wvgt1jpccia8xxs3 foreign key (cart_id) references cart
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item add constraint FKjcyd5wv4igqnw413rgxbfu4nv foreign key (product_id) references product
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item add constraint FKt4dc2r9nbvbujrljv3e23iibt foreign key (order_id) references orders
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item add constraint FK551losx9j75ss5d6bfsqvijna foreign key (product_id) references product
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists orders add constraint FK32ql8ubntj5uh44ph9659tiih foreign key (user_id) references users
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product add constraint FK1mtsbur82frn64de7balymq9s foreign key (category_id) references category
+2026-02-28 23:11:02 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product add constraint FK9ntlod96k0oy2m002vkqynshu foreign key (retailer_id) references retailer
+2026-02-28 23:11:02 [restartedMain] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-28 23:11:02 [restartedMain] INFO  org.springframework.data.jpa.repository.query.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-02-28 23:11:03 [restartedMain] WARN  org.springframework.boot.jpa.autoconfigure.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-28 23:11:05 [restartedMain] WARN  org.springframework.boot.web.server.servlet.context.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-02-28 23:11:05 [restartedMain] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-28 23:11:05 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-02-28 23:11:05 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-02-28 23:11:05 [restartedMain] INFO  org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-02-28 23:11:05 [restartedMain] ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-02-28 23:11:17 [SpringApplicationShutdownHook] INFO  org.springframework.boot.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-28 23:11:17 [tomcat-shutdown] INFO  org.springframework.boot.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-02-28 23:11:17 [SpringApplicationShutdownHook] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-28 23:11:17 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-02-28 23:11:17 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-02-28 23:11:33 [restartedMain] INFO  gritgear.example.GritGear.GritGearApplication - Starting GritGearApplication using Java 23.0.1 with PID 12600 (C:\Users\HP\OneDrive\Desktop\Quantum\target\classes started by HP in C:\Users\HP\OneDrive\Desktop\Quantum)
+2026-02-28 23:11:33 [restartedMain] DEBUG gritgear.example.GritGear.GritGearApplication - Running with Spring Boot v4.0.2, Spring v7.0.3
+2026-02-28 23:11:33 [restartedMain] INFO  gritgear.example.GritGear.GritGearApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-28 23:11:33 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-02-28 23:11:33 [restartedMain] INFO  org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-02-28 23:11:38 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-28 23:11:38 [restartedMain] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 208 ms. Found 8 JPA repository interfaces.
+2026-02-28 23:11:40 [restartedMain] INFO  org.springframework.boot.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-02-28 23:11:40 [restartedMain] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2026-02-28 23:11:40 [restartedMain] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-02-28 23:11:40 [restartedMain] INFO  org.springframework.boot.web.context.servlet.WebApplicationContextInitializer - Root WebApplicationContext: initialization completed in 7002 ms
+2026-02-28 23:11:41 [restartedMain] INFO  org.hibernate.orm.jpa - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-02-28 23:11:41 [restartedMain] INFO  org.hibernate.orm.core - HHH000001: Hibernate ORM core version 7.2.1.Final
+2026-02-28 23:11:43 [restartedMain] INFO  org.springframework.orm.jpa.persistenceunit.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-28 23:11:43 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-02-28 23:11:44 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4df16b22
+2026-02-28 23:11:44 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-02-28 23:11:44 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-28 23:11:44 [restartedMain] INFO  org.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://localhost:5432/gitgear]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 18.1
+	Default catalog/schema: gitgear/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-02-28 23:11:48 [restartedMain] INFO  org.hibernate.orm.core - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - set client_min_messages = WARNING
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart drop constraint if exists FKg5uhi8vpsuy0lgloxk2h4w5o6
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item drop constraint if exists FK1uobyhgl1wvgt1jpccia8xxs3
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item drop constraint if exists FKjcyd5wv4igqnw413rgxbfu4nv
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item drop constraint if exists FKt4dc2r9nbvbujrljv3e23iibt
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item drop constraint if exists FK551losx9j75ss5d6bfsqvijna
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists orders drop constraint if exists FK32ql8ubntj5uh44ph9659tiih
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product drop constraint if exists FK1mtsbur82frn64de7balymq9s
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product drop constraint if exists FK9ntlod96k0oy2m002vkqynshu
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists cart cascade
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists cart_item cascade
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists category cascade
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists order_item cascade
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists orders cascade
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists product cascade
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists retailer cascade
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - drop table if exists users cascade
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - create table cart (id bigint generated by default as identity, user_id bigint, primary key (id))
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - create table cart_item (quantity integer, cart_id bigint not null, id bigint generated by default as identity, product_id bigint not null, primary key (id))
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - create table category (id bigint generated by default as identity, description varchar(255), proname varchar(255), primary key (id))
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - create table order_item (price_at_purchase numeric(38,2), quantity integer, id bigint generated by default as identity, order_id bigint, product_id bigint, primary key (id))
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - create table orders (total_amount numeric(38,2), created_at timestamp(6), id bigint generated by default as identity, user_id bigint, status varchar(255), primary key (id))
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - create table product (price numeric(38,2), quantity integer, category_id bigint not null, id bigint generated by default as identity, retailer_id bigint not null, description varchar(255), image_url varchar(255), name varchar(255), primary key (id))
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - create table retailer (id bigint generated by default as identity, address varchar(255), email varchar(255), name varchar(255), password varchar(255), phone varchar(255), primary key (id))
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - create table users (active boolean not null, id bigint generated by default as identity, email varchar(255) not null unique, full_name varchar(255) not null, password varchar(255) not null, phone_number varchar(255) not null, role varchar(255) not null, primary key (id))
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart add constraint FKg5uhi8vpsuy0lgloxk2h4w5o6 foreign key (user_id) references users
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item add constraint FK1uobyhgl1wvgt1jpccia8xxs3 foreign key (cart_id) references cart
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists cart_item add constraint FKjcyd5wv4igqnw413rgxbfu4nv foreign key (product_id) references product
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item add constraint FKt4dc2r9nbvbujrljv3e23iibt foreign key (order_id) references orders
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists order_item add constraint FK551losx9j75ss5d6bfsqvijna foreign key (product_id) references product
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists orders add constraint FK32ql8ubntj5uh44ph9659tiih foreign key (user_id) references users
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product add constraint FK1mtsbur82frn64de7balymq9s foreign key (category_id) references category
+2026-02-28 23:11:48 [restartedMain] DEBUG org.hibernate.SQL - alter table if exists product add constraint FK9ntlod96k0oy2m002vkqynshu foreign key (retailer_id) references retailer
+2026-02-28 23:11:48 [restartedMain] INFO  org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-28 23:11:49 [restartedMain] INFO  org.springframework.data.jpa.repository.query.QueryEnhancerFactories - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-02-28 23:11:50 [restartedMain] WARN  org.springframework.boot.jpa.autoconfigure.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-28 23:11:52 [restartedMain] INFO  org.springframework.boot.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-02-28 23:11:52 [restartedMain] INFO  gritgear.example.GritGear.GritGearApplication - Started GritGearApplication in 20.587 seconds (process running for 21.973)
+2026-02-28 23:12:07 [http-nio-8080-exec-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-28 23:12:07 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-02-28 23:12:07 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-02-28 23:12:07 [http-nio-8080-exec-1] WARN  org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<gritgear.example.GritGear.dto.user.UserResponseDTO> gritgear.example.GritGear.controller.UserController.createUser(gritgear.example.GritGear.dto.user.UserRequestDTO): [Field error in object 'userRequestDTO' on field 'password': rejected value [user123]; codes [Size.userRequestDTO.password,Size.password,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userRequestDTO.password,password]; arguments []; default message [password],2147483647,8]; default message [Password must be at least 8 characters]] ]
+2026-02-28 23:12:20 [http-nio-8080-exec-2] INFO  gritgear.example.GritGear.service.impl.UserServiceImpl - Creating the user with email: work.testuser2@gmail.com
+2026-02-28 23:12:21 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - insert into users (active,email,full_name,password,phone_number,role) values (?,?,?,?,?,?)
+2026-02-28 23:12:21 [http-nio-8080-exec-2] INFO  gritgear.example.GritGear.service.impl.UserServiceImpl - User created successfully with id: 1
+2026-02-28 23:12:39 [http-nio-8080-exec-3] WARN  org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<gritgear.example.GritGear.dto.retailer.RetailerResponseDTO> gritgear.example.GritGear.controller.RetailerController.createRetailer(gritgear.example.GritGear.dto.retailer.RetailerRequestDTO): [Field error in object 'retailerRequestDTO' on field 'address': rejected value [null]; codes [NotBlank.retailerRequestDTO.address,NotBlank.address,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [retailerRequestDTO.address,address]; arguments []; default message [address]]; default message [Address is required]] ]

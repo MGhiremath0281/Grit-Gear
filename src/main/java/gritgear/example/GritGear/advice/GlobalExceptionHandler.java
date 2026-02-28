@@ -9,32 +9,46 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import jakarta.validation.ConstraintViolationException; // or javax.validation
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     // -------------------- VALIDATION ERRORS --------------------
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(
+            MethodArgumentNotValidException ex,
+            HttpServletRequest request) {
 
-        Map<String, String> errors = new HashMap<>();
-
+        StringBuilder details = new StringBuilder();
         ex.getBindingResult().getFieldErrors()
-                .forEach(error ->
-                        errors.put(error.getField(), error.getDefaultMessage())
-                );
+                .forEach(error -> details.append(error.getField())
+                        .append(": ")
+                        .append(error.getDefaultMessage())
+                        .append("; "));
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, details.toString(), request);
+    }
+
+    // -------------------- CONSTRAINT VIOLATION (QUERY / PATH PARAM) --------------------
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolation(
+            ConstraintViolationException ex,
+            HttpServletRequest request) {
+
+        StringBuilder details = new StringBuilder();
+        ex.getConstraintViolations()
+                .forEach(violation -> details.append(violation.getPropertyPath())
+                        .append(": ")
+                        .append(violation.getMessage())
+                        .append("; "));
+
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, details.toString(), request);
     }
 
     // -------------------- MALFORMED JSON --------------------
-
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(
             HttpMessageNotReadableException ex,
@@ -53,7 +67,6 @@ public class GlobalExceptionHandler {
     }
 
     // -------------------- MISSING QUERY PARAM --------------------
-
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> handleMissingParams(
             MissingServletRequestParameterException ex,
@@ -68,7 +81,6 @@ public class GlobalExceptionHandler {
     }
 
     // -------------------- NOT FOUND EXCEPTIONS --------------------
-
     @ExceptionHandler({
             UserNotFoundException.class,
             RetailernotFoundException.class,
@@ -87,7 +99,6 @@ public class GlobalExceptionHandler {
     }
 
     // -------------------- COMMON BUILDER METHOD --------------------
-
     private ResponseEntity<ErrorResponse> buildErrorResponse(
             HttpStatus status,
             String message,
