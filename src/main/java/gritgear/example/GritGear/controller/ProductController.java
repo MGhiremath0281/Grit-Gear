@@ -3,6 +3,7 @@ package gritgear.example.GritGear.controller;
 import gritgear.example.GritGear.dto.product.ProductResponseDTO;
 import gritgear.example.GritGear.dto.product.ProductRequestDTO;
 import gritgear.example.GritGear.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponseDTO> createProduct(
-            @RequestBody ProductRequestDTO dto) {
+            @Valid @RequestBody ProductRequestDTO dto) {
 
         ProductResponseDTO saved = productService.createProduct(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
@@ -50,7 +51,7 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable Long id,
-            @RequestBody ProductRequestDTO dto) {
+            @Valid @RequestBody ProductRequestDTO dto) {
 
         ProductResponseDTO updated = productService.updateProduct(id, dto);
         return ResponseEntity.ok(updated);
