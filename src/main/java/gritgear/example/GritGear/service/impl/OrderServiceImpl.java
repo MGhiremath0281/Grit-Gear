@@ -8,7 +8,10 @@ import gritgear.example.GritGear.repositry.OrderRepositry;
 import gritgear.example.GritGear.repositry.ProductRepositry;
 import gritgear.example.GritGear.repositry.UserRepository;
 import gritgear.example.GritGear.service.OrderService;
+
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,8 +19,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    // Logger for structured logging
+    private static final Logger logger =
+            LoggerFactory.getLogger(OrderServiceImpl.class);
 
     // Repositories for DB operations
     private final OrderRepositry orderRepository;
@@ -47,10 +55,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDTO createOrder(OrderRequestDTO dto) {
 
+        logger.info("Creating order for userId: {}", dto.getUserId());
+
         //  Validate User existence
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() ->
-                        new UserNotFoundException("User not found with id: " + dto.getUserId()));
+                .orElseThrow(() -> {
+                    logger.error("User not found with id: {}", dto.getUserId());
+                    return new UserNotFoundException(
+                            "User not found with id: " + dto.getUserId());
+                });
 
         //  Initialize Order
         Order order = new Order();
@@ -64,9 +77,14 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItems = dto.getOrderItems().stream().map(itemDto -> {
 
             Product product = productRepository.findById(itemDto.getProductId())
-                    .orElseThrow(() ->
-                            new ProductNotFoundException(
-                                    "Product not found with id: " + itemDto.getProductId()));
+                    .orElseThrow(() -> {
+                        logger.error("Product not found with id: {}", itemDto.getProductId());
+                        return new ProductNotFoundException(
+                                "Product not found with id: " + itemDto.getProductId());
+                    });
+
+            logger.debug("Adding product {} (qty: {}) to order",
+                    product.getName(), itemDto.getQuantity());
 
             OrderItem orderItem = new OrderItem();
             orderItem.setProduct(product);
@@ -92,6 +110,9 @@ public class OrderServiceImpl implements OrderService {
         //  Save order (Cascade saves OrderItems)
         Order savedOrder = orderRepository.save(order);
 
+        logger.info("Order created successfully with id: {} and total: {}",
+                savedOrder.getId(), totalAmount);
+
         return mapToResponse(savedOrder);
     }
 
@@ -100,8 +121,14 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public List<OrderResponseDTO> getAllOrders() {
-        return orderRepository.findAll()
-                .stream()
+
+        logger.info("Fetching all orders");
+
+        List<Order> orders = orderRepository.findAll();
+
+        logger.debug("Total orders found: {}", orders.size());
+
+        return orders.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
@@ -112,9 +139,15 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public OrderResponseDTO getOrderById(Long id) {
+
+        logger.info("Fetching order with id: {}", id);
+
         Order order = orderRepository.findById(id)
-                .orElseThrow(() ->
-                        new OrderNotFoundException("Order not found with id: " + id));
+                .orElseThrow(() -> {
+                    logger.error("Order not found with id: {}", id);
+                    return new OrderNotFoundException(
+                            "Order not found with id: " + id);
+                });
 
         return mapToResponse(order);
     }
@@ -125,13 +158,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDTO updateOrder(Long id, OrderRequestDTO dto) {
 
+        logger.info("Updating order with id: {}", id);
+
         Order existingOrder = orderRepository.findById(id)
-                .orElseThrow(() ->
-                        new OrderNotFoundException("Order not found with id: " + id));
+                .orElseThrow(() -> {
+                    logger.error("Order not found with id: {}", id);
+                    return new OrderNotFoundException(
+                            "Order not found with id: " + id);
+                });
 
         existingOrder.setStatus("UPDATED");
 
         Order updated = orderRepository.save(existingOrder);
+
+        logger.info("Order updated successfully with id: {}", id);
 
         return mapToResponse(updated);
     }
@@ -142,11 +182,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrder(Long id) {
 
+        logger.info("Deleting order with id: {}", id);
+
         if (!orderRepository.existsById(id)) {
+            logger.error("Order not found with id: {}", id);
             throw new OrderNotFoundException("Order not found with id: " + id);
         }
 
         orderRepository.deleteById(id);
+
+        logger.info("Order deleted successfully with id: {}", id);
     }
 
     /**
@@ -156,13 +201,19 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDTO checkoutFromCart(Long userId) {
 
+        logger.info("Checkout initiated for userId: {}", userId);
+
         //  Fetch Cart
         Cart cart = cartRepositry.findByUserId(userId)
-                .orElseThrow(() ->
-                        new CartNotFoundException("Cart not found for user id: " + userId));
+                .orElseThrow(() -> {
+                    logger.error("Cart not found for user id: {}", userId);
+                    return new CartNotFoundException(
+                            "Cart not found for user id: " + userId);
+                });
 
         //  Prevent checkout if cart is empty
         if (cart.getCartItems().isEmpty()) {
+            logger.error("Checkout failed: Cart is empty for userId: {}", userId);
             throw new IllegalStateException("Cart is empty. Cannot checkout.");
         }
 
@@ -181,9 +232,13 @@ public class OrderServiceImpl implements OrderService {
 
             //  Stock validation
             if (product.getQuantity() < cartItem.getQuantity()) {
+                logger.error("Insufficient stock for product: {}", product.getName());
                 throw new IllegalStateException(
                         "Insufficient stock for product: " + product.getName());
             }
+
+            logger.debug("Processing cart item: {} (qty: {})",
+                    product.getName(), cartItem.getQuantity());
 
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
@@ -211,6 +266,9 @@ public class OrderServiceImpl implements OrderService {
         // Clear cart after successful checkout
         cart.getCartItems().clear();
         cartRepositry.save(cart);
+
+        logger.info("Checkout successful. Order id: {}, total: {}",
+                savedOrder.getId(), totalAmount);
 
         return mapToResponse(savedOrder);
     }
