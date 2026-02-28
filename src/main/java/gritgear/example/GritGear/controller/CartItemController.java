@@ -3,6 +3,7 @@ package gritgear.example.GritGear.controller;
 import gritgear.example.GritGear.dto.cartitem.CartItemRequestDTO;
 import gritgear.example.GritGear.dto.cartitem.CartItemResponseDTO;
 import gritgear.example.GritGear.service.CartItemService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class CartItemController {
     }
 
     @PostMapping
-    public CartItemResponseDTO createCartItem(@RequestBody CartItemRequestDTO dto) {
+    public CartItemResponseDTO createCartItem(@Valid @RequestBody CartItemRequestDTO dto) {
         return cartItemService.createCartItem(dto);
     }
 
@@ -34,7 +35,7 @@ public class CartItemController {
 
     @PutMapping("/{id}")
     public CartItemResponseDTO updateCartItem(@PathVariable Long id,
-                                              @RequestBody CartItemRequestDTO dto) {
+                                              @Valid @RequestBody CartItemRequestDTO dto) {
         return cartItemService.updateCartItem(id, dto);
     }
 
