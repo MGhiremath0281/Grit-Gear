@@ -3,6 +3,7 @@ package gritgear.example.GritGear.controller;
 import gritgear.example.GritGear.dto.category.CategoryRequestDTO;
 import gritgear.example.GritGear.dto.category.CategoryResponseDTO;
 import gritgear.example.GritGear.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponseDTO> createCategory(@RequestBody CategoryRequestDTO dto){
+    public ResponseEntity<CategoryResponseDTO> createCategory(@Valid @RequestBody CategoryRequestDTO dto){
        CategoryResponseDTO created = categoryService.createCategory(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
@@ -46,7 +47,7 @@ public class CategoryController {
     @PutMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> updateCategory(
             @PathVariable Long id,
-            @RequestParam CategoryRequestDTO dto){
+           @Valid @RequestParam CategoryRequestDTO dto){
         CategoryResponseDTO updated = categoryService.updateCategory(id,dto);
         return ResponseEntity.ok(updated);
     }
