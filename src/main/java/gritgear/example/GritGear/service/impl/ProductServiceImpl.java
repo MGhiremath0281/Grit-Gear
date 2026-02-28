@@ -13,12 +13,13 @@ import gritgear.example.GritGear.repositry.ProductRepositry;
 import gritgear.example.GritGear.repositry.RetailerRepositry;
 import gritgear.example.GritGear.service.ProductService;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -77,17 +78,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDTO> getAllProducts() {
+    public Page<ProductResponseDTO> getAllProducts(int page, int size) {
 
-        logger.info("Fetching all products");
+        logger.info("Fetching products - page: {}, size: {}", page, size);
 
-        List<Product> products = productRepositry.findAll();
+        Pageable pageable = PageRequest.of(page, size);
 
-        logger.debug("Total products found: {}", products.size());
+        Page<Product> productPage = productRepositry.findAll(pageable);
 
-        return products.stream()
-                .map(this::mapToResponseDTO)
-                .toList();
+        logger.debug("Total products found: {}", productPage.getTotalElements());
+
+        return productPage.map(this::mapToResponseDTO);
     }
 
     @Override
