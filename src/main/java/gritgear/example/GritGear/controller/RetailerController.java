@@ -3,6 +3,7 @@ package gritgear.example.GritGear.controller;
 import gritgear.example.GritGear.dto.retailer.RetailerRequestDTO;
 import gritgear.example.GritGear.dto.retailer.RetailerResponseDTO;
 import gritgear.example.GritGear.service.RetailerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class RetailerController{
     }
 
     @PostMapping
-    public ResponseEntity<RetailerResponseDTO> createRetailer(@RequestBody RetailerRequestDTO dto) {
+    public ResponseEntity<RetailerResponseDTO> createRetailer(@Valid @RequestBody RetailerRequestDTO dto) {
         RetailerResponseDTO created = retailerService.createRetailer(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
@@ -46,7 +47,7 @@ public class RetailerController{
     @PutMapping("/{id}")
     public ResponseEntity<RetailerResponseDTO> updateRetailer(
             @PathVariable Long id,
-            @RequestBody RetailerRequestDTO dto) {
+            @Valid @RequestBody RetailerRequestDTO dto) {
 
         RetailerResponseDTO updated = retailerService.updateRetailer(id, dto);
 
