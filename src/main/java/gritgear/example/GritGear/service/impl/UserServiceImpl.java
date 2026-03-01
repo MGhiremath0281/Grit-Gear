@@ -36,9 +36,20 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO createUser(UserRequestDTO dto) {
 
         logger.info("Creating the user with email: {}",dto.getEmail());
+        if(userRepository.existsByEmail(dto.getEmail())){
+            throw new RuntimeException("Error : Email is already in use!");
+        }
+
         User user = modelMapper.map(dto, User.class);
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        if (dto.getRole() == null) {
+            user.setRole("ROLE_USER");
+        } else {
+            user.setRole(dto.getRole().startsWith("ROLE_") ? dto.getRole() : "ROLE_" + dto.getRole());
+        }
+
         User savedUser = userRepository.save(user);
 
         logger.info("User created successfully with id: {}", savedUser.getId());
