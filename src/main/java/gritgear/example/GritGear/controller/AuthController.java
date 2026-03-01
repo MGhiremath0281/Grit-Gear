@@ -4,6 +4,7 @@ import gritgear.example.GritGear.config.security.JwtUtil;
 import gritgear.example.GritGear.dto.auth.AuthResponse;
 import gritgear.example.GritGear.dto.user.UserRequestDTO;
 import gritgear.example.GritGear.dto.user.UserResponseDTO;
+import gritgear.example.GritGear.model.Role;
 import gritgear.example.GritGear.service.UserService;
 
 import org.springframework.http.ResponseEntity;
@@ -28,11 +29,25 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
-    @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> register(@RequestBody UserRequestDTO dto) {
+
+    @PostMapping("/register/user")
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequestDTO dto) {
+
+        dto.setRole(Role.ROLE_USER);  // Force role
         UserResponseDTO savedUser = userService.createUser(dto);
+
         return ResponseEntity.ok(savedUser);
     }
+
+    @PostMapping("/register/retailer")
+    public ResponseEntity<UserResponseDTO> registerRetailer(@RequestBody UserRequestDTO dto) {
+
+        dto.setRole(Role.ROLE_RETAILER);  // Force role
+        UserResponseDTO savedRetailer = userService.createUser(dto);
+
+        return ResponseEntity.ok(savedRetailer);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody UserRequestDTO dto) {
 
