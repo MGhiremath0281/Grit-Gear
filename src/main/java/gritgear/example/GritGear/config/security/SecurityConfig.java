@@ -10,8 +10,10 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer; // Add this
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -19,10 +21,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final MyUserDetailsService myUserDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public SecurityConfig(MyUserDetailsService myUserDetailsService, PasswordEncoder passwordEncoder) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, MyUserDetailsService myUserDetailsService, PasswordEncoder passwordEncoder) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.myUserDetailsService = myUserDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -34,18 +38,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                // 1. CRITICAL: Disable CSRF so Postman can send POST requests
-                .csrf(AbstractHttpConfigurer::disable)
 
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/public/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                // 2. Allow Postman to use "Basic Auth" (Username/Password in headers)
-                .httpBasic(withDefaults())
-
-                .formLogin(withDefaults());
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
