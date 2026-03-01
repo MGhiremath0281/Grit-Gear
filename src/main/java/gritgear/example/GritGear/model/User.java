@@ -25,27 +25,25 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role; // Example: "ROLE_USER" or "ROLE_ADMIN"
+    private Role role;
 
     @Column(nullable = false)
     private Boolean active;
 
     private String phoneNumber;
 
-    // Standard Constructors
     public User() {}
 
-    // Security Methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Converts "ROLE_ADMIN" string into a GrantedAuthority object
-        return List.of(new SimpleGrantedAuthority(this.role));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
     public String getUsername() {
-        return this.email; // Using email as the login identifier
+        return this.email;
     }
 
     @Override
@@ -95,11 +93,11 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
