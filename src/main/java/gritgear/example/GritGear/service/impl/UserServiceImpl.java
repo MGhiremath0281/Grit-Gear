@@ -3,6 +3,7 @@ package gritgear.example.GritGear.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import gritgear.example.GritGear.model.Role;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,9 +46,12 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         if (dto.getRole() == null) {
-            user.setRole("ROLE_USER");
+            user.setRole(Role.ROLE_USER);
         } else {
-            user.setRole(dto.getRole().startsWith("ROLE_") ? dto.getRole() : "ROLE_" + dto.getRole());
+            if (dto.getRole() == Role.ROLE_ADMIN) {
+                throw new RuntimeException("Admin registration not allowed");
+            }
+            user.setRole(dto.getRole());
         }
 
         User savedUser = userRepository.save(user);

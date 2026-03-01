@@ -1,5 +1,6 @@
 package gritgear.example.GritGear.dto.user;
 
+import gritgear.example.GritGear.model.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -21,7 +22,7 @@ public class UserRequestDTO {
     private String password;
 
     @NotBlank(message = "Role is required")
-    private String role;
+    private Role role;
 
     @NotBlank(message = "Phone number is required")
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
@@ -51,11 +52,11 @@ public class UserRequestDTO {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
-    
-    public void setRole(String role) {
+
+    public void setRole(Role role) {
         this.role = role;
     }
 
