@@ -1,10 +1,16 @@
 package gritgear.example.GritGear.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,31 +26,46 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String role;
+    private String role; // Example: "ROLE_USER" or "ROLE_ADMIN"
 
     @Column(nullable = false)
     private Boolean active;
 
-    @Column(nullable = false)
     private String phoneNumber;
 
-    // -------- Constructors --------
+    // Standard Constructors
+    public User() {}
 
-    public User() {
+    // Security Methods
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Converts "ROLE_ADMIN" string into a GrantedAuthority object
+        return List.of(new SimpleGrantedAuthority(this.role));
     }
 
-    public User(Long id, String fullName, String email, String password,
-                String role, Boolean active, String phoneNumber) {
-        this.id = id;
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.active = active;
-        this.phoneNumber = phoneNumber;
+    @Override
+    public String getUsername() {
+        return this.email; // Using email as the login identifier
     }
 
-    // -------- Getters & Setters --------
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() {
+        return this.active != null && this.active;
+    }
 
     public Long getId() {
         return id;
@@ -68,10 +89,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
