@@ -7,14 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import gritgear.example.GritGear.dto.user.UserResponseDTO;
 import gritgear.example.GritGear.dto.user.UserRequestDTO;
+import gritgear.example.GritGear.dto.user.UserResponseDTO;
 import gritgear.example.GritGear.service.UserService;
-import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/users")
-@RequiredArgsConstructor
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -46,7 +44,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(
             @PathVariable Long id,
-           @Valid @RequestBody UserRequestDTO dto) {
+            @Valid @RequestBody UserRequestDTO dto) {
 
         UserResponseDTO updated = userService.updateUser(id, dto);
         if (updated == null) {
