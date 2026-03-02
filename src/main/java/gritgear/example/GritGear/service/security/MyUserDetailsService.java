@@ -1,4 +1,4 @@
-package gritgear.example.GritGear.service;
+package gritgear.example.GritGear.service.security;
 
 import gritgear.example.GritGear.repositry.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +18,7 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+                .map(CustomUserDetails::new) // Wrap your entity in our security object
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
     }
 }

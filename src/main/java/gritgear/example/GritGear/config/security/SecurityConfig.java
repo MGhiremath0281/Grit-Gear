@@ -1,6 +1,6 @@
 package gritgear.example.GritGear.config.security;
 
-import gritgear.example.GritGear.service.MyUserDetailsService;
+import gritgear.example.GritGear.service.security.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
