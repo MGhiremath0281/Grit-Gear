@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+
 public class CustomUserDetails implements UserDetails {
 
     private final Long id;
@@ -18,14 +19,20 @@ public class CustomUserDetails implements UserDetails {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        // Assumes your UserEntity has a getRole() method returning "USER" or "ADMIN"
-        this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+
+        // FIXED: Since your Enum is ROLE_ADMIN, just use the name directly.
+        // If your Enum was just ADMIN, you would need the "ROLE_" prefix here.
+        this.authorities = Collections.singletonList(
+                new SimpleGrantedAuthority(user.getRole().name())
+        );
     }
 
     public Long getId() { return id; }
     @Override public String getUsername() { return email; }
     @Override public String getPassword() { return password; }
     @Override public Collection<? extends GrantedAuthority> getAuthorities() { return authorities; }
+
+    // Standard UserDetails overrides
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() { return true; }
     @Override public boolean isCredentialsNonExpired() { return true; }
