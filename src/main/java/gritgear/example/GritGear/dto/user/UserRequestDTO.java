@@ -1,10 +1,7 @@
 package gritgear.example.GritGear.dto.user;
 
 import gritgear.example.GritGear.model.Role;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public class UserRequestDTO {
 
@@ -21,7 +18,6 @@ public class UserRequestDTO {
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
-    @NotBlank(message = "Role is required")
     private Role role;
 
     @NotBlank(message = "Phone number is required")
