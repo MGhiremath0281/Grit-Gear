@@ -3,6 +3,7 @@ package gritgear.example.GritGear.controller;
 import gritgear.example.GritGear.dto.cart.CartResponseDTO;
 import gritgear.example.GritGear.service.CartService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,24 +15,27 @@ public class CartController {
     public CartController(CartService cartService) {
         this.cartService = cartService;
     }
-
     @PostMapping("/user/{userId}")
-    public CartResponseDTO createCart( @PathVariable Long userId) {
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    public CartResponseDTO createCart(@Valid @PathVariable Long userId) {
         return cartService.createCart(userId);
     }
 
     @GetMapping("/user/{userId}")
-    public CartResponseDTO getCartByUserId( @PathVariable Long userId) {
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    public CartResponseDTO getCartByUserId(@Valid @PathVariable Long userId) {
         return cartService.getCartByUserId(userId);
     }
 
     @DeleteMapping("/user/{userId}/clear")
-    public void clearCart( @PathVariable Long userId) {
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    public void clearCart(@Valid @PathVariable Long userId) {
         cartService.clearCart(userId);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCart(@PathVariable Long id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteCart(@Valid @PathVariable Long id) {
         cartService.deleteCart(id);
     }
 }
