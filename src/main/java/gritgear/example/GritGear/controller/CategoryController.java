@@ -6,6 +6,7 @@ import gritgear.example.GritGear.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,46 +15,48 @@ import java.util.List;
 @RequestMapping("/api/category")
 public class CategoryController {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponseDTO> createCategory(@Valid @RequestBody CategoryRequestDTO dto){
-       CategoryResponseDTO created = categoryService.createCategory(dto);
+    @PreAuthorize("hasAnyRole('ADMIN', 'RETAILER')")
+    public ResponseEntity<CategoryResponseDTO> createCategory(@Valid @RequestBody CategoryRequestDTO dto) {
+        CategoryResponseDTO created = categoryService.createCategory(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryResponseDTO> getCategorybyId(@PathVariable Long id){
+    @PreAuthorize("hasAnyRole('USER', 'RETAILER', 'ADMIN')")
+    public ResponseEntity<CategoryResponseDTO> getCategorybyId(@PathVariable Long id) {
         CategoryResponseDTO got = categoryService.getCategorybyId(id);
-       if(got ==null){
-           return  ResponseEntity.notFound().build();
-       }
-       else {
-           return ResponseEntity.ok(got);
-       }
+        if (got == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(got);
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponseDTO>> getAllCategory(){
+    @PreAuthorize("hasAnyRole('USER', 'RETAILER', 'ADMIN')")
+    public ResponseEntity<List<CategoryResponseDTO>> getAllCategory() {
         List<CategoryResponseDTO> categories = categoryService.getAllCategory();
         return ResponseEntity.ok(categories);
-
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'RETAILER')")
     public ResponseEntity<CategoryResponseDTO> updateCategory(
             @PathVariable Long id,
-           @Valid @RequestBody CategoryRequestDTO dto){
-        CategoryResponseDTO updated = categoryService.updateCategory(id,dto);
+            @Valid @RequestBody CategoryRequestDTO dto) {
+        CategoryResponseDTO updated = categoryService.updateCategory(id, dto);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }
