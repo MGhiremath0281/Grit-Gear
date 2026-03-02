@@ -21,55 +21,46 @@ public class RetailerController {
         this.retailerService = retailerService;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','RETAILER')")
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'RETAILER')")
     public ResponseEntity<RetailerResponseDTO> createRetailer(
             @Valid @RequestBody RetailerRequestDTO dto) {
-
         RetailerResponseDTO created = retailerService.createRetailer(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyRole('USER','RETAILER','ADMIN')")
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'RETAILER', 'ADMIN')")
     public ResponseEntity<RetailerResponseDTO> getRetailer(@PathVariable Long id) {
-
         RetailerResponseDTO got = retailerService.getRetailerById(id);
-
         if (got == null) {
             return ResponseEntity.notFound().build();
         }
-
         return ResponseEntity.ok(got);
     }
 
-    @PreAuthorize("hasAnyRole('USER','RETAILER','ADMIN')")
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'RETAILER', 'ADMIN')")
     public ResponseEntity<List<RetailerResponseDTO>> getAllRetailers() {
-
         List<RetailerResponseDTO> retailers = retailerService.getAllRetailers();
         return ResponseEntity.ok(retailers);
     }
 
-    @PreAuthorize("hasAnyRole('RETAILER','ADMIN')")
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('RETAILER', 'ADMIN')")
     public ResponseEntity<RetailerResponseDTO> updateRetailer(
             @PathVariable Long id,
             @Valid @RequestBody RetailerRequestDTO dto) {
-
         RetailerResponseDTO updated = retailerService.updateRetailer(id, dto);
-
         if (updated == null) {
             return ResponseEntity.notFound().build();
         }
-
         return ResponseEntity.ok(updated);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteRetailer(@PathVariable Long id) {
-
         retailerService.deleteRetailer(id);
         return ResponseEntity.noContent().build();
     }

@@ -1,15 +1,18 @@
 package gritgear.example.GritGear.controller;
 
-import java.util.List;
+import gritgear.example.GritGear.dto.user.UserRequestDTO;
+import gritgear.example.GritGear.dto.user.UserResponseDTO;
 
+import gritgear.example.GritGear.service.UserService;
+import gritgear.example.GritGear.service.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import gritgear.example.GritGear.dto.user.UserRequestDTO;
-import gritgear.example.GritGear.dto.user.UserResponseDTO;
-import gritgear.example.GritGear.service.UserService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -21,41 +24,32 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO dto) {
-        UserResponseDTO created = userService.createUser(dto);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    @PutMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserResponseDTO> updateMyProfile(
+            @AuthenticationPrincipal CustomUserDetails currentUser,
+            @Valid @RequestBody UserRequestDTO dto) {
+        UserResponseDTO updated = userService.updateUser(currentUser.getId(), dto);
+        return ResponseEntity.ok(updated);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
-        UserResponseDTO user = userService.getUserById(id);
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(user);
+    @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserResponseDTO> getMyProfile(@AuthenticationPrincipal CustomUserDetails currentUser) {
+        return ResponseEntity.ok(userService.getUserById(currentUser.getId()));
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(
-            @PathVariable Long id,
-            @Valid @RequestBody UserRequestDTO dto) {
-
-        UserResponseDTO updated = userService.updateUser(id, dto);
-        if (updated == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(updated);
-    }
-
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }
