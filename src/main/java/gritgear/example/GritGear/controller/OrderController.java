@@ -6,9 +6,8 @@ import gritgear.example.GritGear.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -21,39 +20,41 @@ public class OrderController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public OrderResponseDTO createOrder(@Valid @RequestBody OrderRequestDTO dto) {
         return orderService.createOrder(dto);
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<OrderResponseDTO>> getAllOrders(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
-
         return ResponseEntity.ok(orderService.getAllOrders(page, size));
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @orderSecurity.isOrderOwnerOrRetailer(#id)")
     public OrderResponseDTO getOrderById(@PathVariable Long id) {
         return orderService.getOrderById(id);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'RETAILER')")
     public OrderResponseDTO updateOrder(@PathVariable Long id,
-                                       @Valid @RequestBody OrderRequestDTO dto) {
+                                        @Valid @RequestBody OrderRequestDTO dto) {
         return orderService.updateOrder(id, dto);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);
     }
 
     @PostMapping("/checkout/{userId}")
-    public ResponseEntity<OrderResponseDTO> checkout(
-            @PathVariable Long userId) {
-
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    public ResponseEntity<OrderResponseDTO> checkout(@PathVariable Long userId) {
         return ResponseEntity.ok(orderService.checkoutFromCart(userId));
     }
-
 }
