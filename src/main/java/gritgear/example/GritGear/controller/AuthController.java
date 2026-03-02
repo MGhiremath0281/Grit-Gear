@@ -2,13 +2,16 @@ package gritgear.example.GritGear.controller;
 
 import gritgear.example.GritGear.config.security.JwtUtil;
 import gritgear.example.GritGear.dto.auth.AuthResponse;
+import gritgear.example.GritGear.dto.auth.LoginRequestDTO;
 import gritgear.example.GritGear.dto.retailer.RetailerRequestDTO;
 import gritgear.example.GritGear.dto.user.UserRequestDTO;
 import gritgear.example.GritGear.dto.user.UserResponseDTO;
 import gritgear.example.GritGear.model.Role;
+import gritgear.example.GritGear.model.User;
 import gritgear.example.GritGear.service.RetailerService;
 import gritgear.example.GritGear.service.UserService;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +30,8 @@ public class AuthController {
 
     public AuthController(UserService userService,
                           AuthenticationManager authenticationManager,
-                          JwtUtil jwtUtil, RetailerService retailerService) {
+                          JwtUtil jwtUtil,
+                          RetailerService retailerService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
@@ -35,17 +39,14 @@ public class AuthController {
     }
 
     @PostMapping("/register/user")
-    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequestDTO dto) {
-
+    public ResponseEntity<UserResponseDTO> registerUser(@Valid @RequestBody UserRequestDTO dto) {
         dto.setRole(Role.ROLE_USER);
         UserResponseDTO savedUser = userService.createUser(dto);
-
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/register/retailer")
-    public ResponseEntity<UserResponseDTO> registerRetailer(@RequestBody UserRequestDTO dto) {
-
+    public ResponseEntity<UserResponseDTO> registerRetailer(@Valid @RequestBody UserRequestDTO dto) {
         dto.setRole(Role.ROLE_RETAILER);
         UserResponseDTO savedUser = userService.createUser(dto);
 
@@ -60,19 +61,24 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody UserRequestDTO dto) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequestDTO dto) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        dto.getEmail(),
-                        dto.getPassword()
-                )
+                new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword())
         );
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = jwtUtil.generateToken(dto.getEmail());
+        User user = userService.findByEmail(dto.getEmail());
 
-        return ResponseEntity.ok(new AuthResponse(token));
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
+
+        AuthResponse response = new AuthResponse(
+                token,
+                user.getId(),
+                user.getRole().name(),
+                user.getEmail()
+        );
+
+        return ResponseEntity.ok(response);
     }
 }
