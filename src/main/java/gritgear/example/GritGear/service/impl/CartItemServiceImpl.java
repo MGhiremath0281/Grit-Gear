@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CartItemServiceImpl implements CartItemService {
@@ -129,6 +130,14 @@ public class CartItemServiceImpl implements CartItemService {
         logger.info("CartItem updated successfully with id: {}", id);
 
         return mapToResponse(updatedItem);
+    }
+
+    @Override
+    public List<CartItemResponseDTO> getItemsByCartId(Long cartId) {
+        List<CartItem> items = cartItemRepository.findByCartId(cartId);
+        return items.stream()
+                .map(item -> modelMapper.map(item, CartItemResponseDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
