@@ -2,6 +2,7 @@ package gritgear.example.GritGear.controller;
 
 import gritgear.example.GritGear.config.security.JwtUtil;
 import gritgear.example.GritGear.dto.auth.AuthResponse;
+import gritgear.example.GritGear.dto.auth.ChangePasswordRequest;
 import gritgear.example.GritGear.dto.auth.LoginRequestDTO;
 import gritgear.example.GritGear.dto.retailer.RetailerRequestDTO;
 import gritgear.example.GritGear.dto.user.UserRequestDTO;
@@ -80,5 +81,13 @@ public class AuthController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(
+            @RequestBody ChangePasswordRequest request) {
+
+        userService.changePassword(request);
+        return ResponseEntity.ok("Password changed successfully");
     }
 }

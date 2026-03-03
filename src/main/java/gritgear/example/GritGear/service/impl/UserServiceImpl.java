@@ -3,13 +3,15 @@ package gritgear.example.GritGear.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import gritgear.example.GritGear.dto.auth.ChangePasswordRequest;
 import gritgear.example.GritGear.model.Role;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import gritgear.example.GritGear.dto.user.UserRequestDTO;
 import gritgear.example.GritGear.dto.user.UserResponseDTO;
 import gritgear.example.GritGear.exception.UserNotFoundException;
@@ -132,5 +134,43 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest request) {
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(
+                request.getCurrentPassword(),
+                user.getPassword())) {
+
+            throw new RuntimeException("Current password is incorrect");
+        }
+
+        if (!request.getNewPassword()
+                .equals(request.getConfirmPassword())) {
+
+            throw new RuntimeException("New passwords do not match");
+        }
+
+        if (passwordEncoder.matches(
+                request.getNewPassword(),
+                user.getPassword())) {
+
+            throw new RuntimeException("New password cannot be same as old password");
+        }
+
+        user.setPassword(
+                passwordEncoder.encode(request.getNewPassword())
+        );
+
+        userRepository.save(user);
     }
 }
