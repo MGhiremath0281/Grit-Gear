@@ -140,11 +140,11 @@ public class AuthServiceImpl implements AuthService {
         response.setEmail(user.getEmail());
         response.setFullName(user.getFullName());
         response.setRole(user.getRole());
-        // ADD THESE TWO LINES:
         response.setPhoneNumber(user.getPhoneNumber());
         response.setActive(user.getActive());
         return response;
     }
 
     //http://localhost:8080/oauth2/authorization/google
+    //http://localhost:8080/oauth2/authorization/github
 }
