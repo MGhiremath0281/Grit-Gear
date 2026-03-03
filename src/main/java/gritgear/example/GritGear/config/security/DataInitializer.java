@@ -1,5 +1,6 @@
 package gritgear.example.GritGear.config.security;
 
+import gritgear.example.GritGear.model.AuthProvider;
 import gritgear.example.GritGear.model.Role;
 import gritgear.example.GritGear.model.User;
 import gritgear.example.GritGear.repositry.UserRepository;
@@ -37,6 +38,7 @@ public class DataInitializer {
             admin.setPassword(passwordEncoder.encode(adminPassword));
             admin.setRole(Role.ROLE_ADMIN);
             admin.setActive(true);
+            admin.setProvider(AuthProvider.LOCAL);
 
             userRepository.save(admin);
 
