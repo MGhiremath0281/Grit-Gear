@@ -22,9 +22,20 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    public AuthProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(AuthProvider provider) {
+        this.provider = provider;
+    }
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
