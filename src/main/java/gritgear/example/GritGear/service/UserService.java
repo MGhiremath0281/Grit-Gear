@@ -21,5 +21,4 @@ public interface UserService {
 
     User findByEmail(String email);
 
-    public void changePassword(ChangePasswordRequest request);
 }
