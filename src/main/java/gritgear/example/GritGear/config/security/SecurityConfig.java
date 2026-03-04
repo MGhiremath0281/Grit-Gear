@@ -50,12 +50,16 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        // FIX: Changed from /public/auth/** to /api/auth/** to match your likely controller path
-                        .requestMatchers("/api/auth/**").permitAll()
-                        // FIX: Added Stripe Webhook to permitAll so orders can update to PAID
+                        // 1. Matches your AuthController exactly
+                        .requestMatchers("/public/auth/**").permitAll()
+
+                        // 2. Allows Stripe to send payment updates without a JWT
                         .requestMatchers("/api/payment/webhook").permitAll()
-                        .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
-                        .requestMatchers("/error").permitAll()
+
+                        // 3. Allows OAuth2 and error pages
+                        .requestMatchers("/login/oauth2/**", "/oauth2/**", "/error").permitAll()
+
+                        // 4. Everything else (Orders, Cart, etc.) needs a token
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
@@ -63,11 +67,11 @@ public class SecurityConfig {
                 .oauth2Login(oauth -> oauth.successHandler(oAuth2LoginSuccessHandler))
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
-                            // Helps you see WHY it failed in the console
-                            System.out.println("Blocked by Security: " + authException.getMessage());
+                            // This prints to your terminal so you can see the real error
+                            System.out.println("Security Blocked Request: " + authException.getMessage());
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType("application/json");
-                            response.getWriter().write("{\"error\":\"Unauthorized access - please log in.\"}");
+                            response.getWriter().write("{\"error\":\"Unauthorized - please log in.\"}");
                         })
                 );
 

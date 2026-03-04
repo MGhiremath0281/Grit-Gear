@@ -20,7 +20,7 @@ public class WebhookController {
     private final OrderService orderService;
 
     // In production, move this to application.properties
-    private String endpointSecret = "whsec_TQJuzWq6nYrbZD46zpm5kndxw9I2ZWHc";
+    private String endpointSecret = "whsec_rmBWHDoC6kUYrB5x75v4xzRO1B0mgnKZ";
 
     public WebhookController(PaymentService paymentService, OrderService orderService) {
         this.paymentService = paymentService;
