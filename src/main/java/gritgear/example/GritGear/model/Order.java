@@ -1,12 +1,21 @@
 package gritgear.example.GritGear.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@Data                 // Generates getters, setters, toString, equals, and hashCode
+@NoArgsConstructor    // Generates the empty constructor
+@AllArgsConstructor   // Generates a constructor with all fields
+@Builder              // Allows for easy object creation: Order.builder().status("PAID").build()
 public class Order {
 
     @Id
@@ -24,57 +33,21 @@ public class Order {
 
     private String status;
 
+    private String currency;  // INR, USD, etc.
+
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Order() {
+    // Use @PrePersist to automatically set the date before saving to DB
+    @PrePersist
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+    }
+
+    // Custom constructor if you need to pass a Long for amount
+    public Order(Long amount, String currency, String status) {
+        this.totalAmount = (amount != null) ? BigDecimal.valueOf(amount) : BigDecimal.ZERO;
+        this.currency = currency;
+        this.status = status;
     }
 }
