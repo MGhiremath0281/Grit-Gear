@@ -2,6 +2,7 @@ package gritgear.example.GritGear.service;
 
 import gritgear.example.GritGear.dto.order.OrderRequestDTO;
 import gritgear.example.GritGear.dto.order.OrderResponseDTO;
+import gritgear.example.GritGear.model.Order;
 import org.springframework.data.domain.Page;
 
 public interface OrderService {
@@ -16,5 +17,8 @@ public interface OrderService {
 
     void deleteOrder(Long id);
     OrderResponseDTO checkoutFromCart(Long userId);
+    Order createOrder(Long amount, String currency);
+    void updateOrderStatus(Long orderId, String status);
+
 
 }
