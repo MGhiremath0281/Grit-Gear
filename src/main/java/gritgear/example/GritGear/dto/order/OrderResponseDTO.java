@@ -13,6 +13,7 @@ public class OrderResponseDTO {
     private List<OrderItemResponseDTO> orderItems;
     private BigDecimal totalAmount;
     private String status;
+    private String currency; // Added to match Order model
     private LocalDateTime createdAt;
 
     public OrderResponseDTO() {
@@ -56,6 +57,14 @@ public class OrderResponseDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public LocalDateTime getCreatedAt() {
