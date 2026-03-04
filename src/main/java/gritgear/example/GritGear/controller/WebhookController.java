@@ -7,47 +7,49 @@ import gritgear.example.GritGear.model.Payment;
 import gritgear.example.GritGear.repositry.PaymentRepository;
 import gritgear.example.GritGear.service.OrderService;
 import gritgear.example.GritGear.service.PaymentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/payment")
 public class WebhookController {
 
-    private static final String endpointSecret = "whsec_TQJuzWq6nYrbZD46zpm5kndxw9I2ZWHc";
+    private final PaymentService paymentService;
+    private final OrderService orderService;
 
-    @Autowired
-    private PaymentService paymentService;
+    // In production, move this to application.properties
+    private String endpointSecret = "whsec_TQJuzWq6nYrbZD46zpm5kndxw9I2ZWHc";
 
-    @Autowired
-    private OrderService orderService;
-
-    @Autowired
-    private PaymentRepository paymentRepository;
+    public WebhookController(PaymentService paymentService, OrderService orderService) {
+        this.paymentService = paymentService;
+        this.orderService = orderService;
+    }
 
     @PostMapping("/webhook")
-    public String handleStripeEvent(@RequestHeader("Stripe-Signature") String sigHeader,
-                                    @RequestBody String payload) {
+    public ResponseEntity<String> handleStripeEvent(@RequestHeader("Stripe-Signature") String sigHeader,
+                                                    @RequestBody String payload) {
         try {
             Event event = Webhook.constructEvent(payload, sigHeader, endpointSecret);
+            PaymentIntent intent = null;
 
             if ("payment_intent.succeeded".equals(event.getType())) {
-                PaymentIntent intent = (PaymentIntent) event.getDataObjectDeserializer().getObject().get();
+                intent = (PaymentIntent) event.getDataObjectDeserializer().getObject().get();
                 paymentService.updatePaymentStatus(intent.getId(), "SUCCEEDED");
                 Payment payment = paymentService.getPaymentByIntentId(intent.getId());
                 orderService.updateOrderStatus(payment.getOrderId(), "PAID");
             }
-
-            if ("payment_intent.payment_failed".equals(event.getType())) {
-                PaymentIntent intent = (PaymentIntent) event.getDataObjectDeserializer().getObject().get();
+            else if ("payment_intent.payment_failed".equals(event.getType())) {
+                intent = (PaymentIntent) event.getDataObjectDeserializer().getObject().get();
                 paymentService.updatePaymentStatus(intent.getId(), "FAILED");
                 Payment payment = paymentService.getPaymentByIntentId(intent.getId());
                 orderService.updateOrderStatus(payment.getOrderId(), "FAILED");
             }
 
-            return "";
+            return ResponseEntity.ok("Success");
         } catch (Exception e) {
-            return "Webhook error: " + e.getMessage();
+            return ResponseEntity.status(400).body("Webhook error: " + e.getMessage());
         }
     }
 }

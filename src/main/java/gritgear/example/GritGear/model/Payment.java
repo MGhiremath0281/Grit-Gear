@@ -1,15 +1,10 @@
 package gritgear.example.GritGear.model;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "payments")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Payment {
 
     @Id
@@ -29,5 +24,36 @@ public class Payment {
     private String currency;
 
     @Column(name = "status", nullable = false)
-    private String status; // PENDING, SUCCEEDED, FAILED
+    private String status;
+
+    // Default Constructor for JPA
+    public Payment() {}
+
+    // Full Constructor for manual use in Controller
+    public Payment(String paymentIntentId, Long orderId, BigDecimal amount, String currency, String status) {
+        this.paymentIntentId = paymentIntentId;
+        this.orderId = orderId;
+        this.amount = amount;
+        this.currency = currency;
+        this.status = status;
+    }
+
+    // Standard Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getPaymentIntentId() { return paymentIntentId; }
+    public void setPaymentIntentId(String paymentIntentId) { this.paymentIntentId = paymentIntentId; }
+
+    public Long getOrderId() { return orderId; }
+    public void setOrderId(Long orderId) { this.orderId = orderId; }
+
+    public BigDecimal getAmount() { return amount; }
+    public void setAmount(BigDecimal amount) { this.amount = amount; }
+
+    public String getCurrency() { return currency; }
+    public void setCurrency(String currency) { this.currency = currency; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

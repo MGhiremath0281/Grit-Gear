@@ -7,18 +7,31 @@ import org.springframework.data.domain.Page;
 
 public interface OrderService {
 
+    // --- Unified Checkout Logic (For Stripe Flow) ---
+
+    /**
+     * Converts the user's current cart into a PENDING order.
+     * Use this in the PaymentController before creating the Stripe Intent.
+     */
+    Order processCheckout(Long userId);
+
+    /**
+     * Updates the status of an order (e.g., PENDING -> PAID).
+     * Typically called by the WebhookController.
+     */
+    void updateOrderStatus(Long orderId, String status);
+
+
+    // --- Admin & UI Support Methods ---
+
     OrderResponseDTO createOrder(OrderRequestDTO dto);
 
     Page<OrderResponseDTO> getAllOrders(int page, int size);
 
     OrderResponseDTO getOrderById(Long id);
 
-    OrderResponseDTO updateOrder(Long id, OrderRequestDTO dto);
-
     void deleteOrder(Long id);
-    OrderResponseDTO checkoutFromCart(Long userId);
-    Order createOrder(Long amount, String currency);
-    void updateOrderStatus(Long orderId, String status);
 
-
+    // Note: checkoutFromCart is now consolidated into processCheckout
+    // to return the raw Order entity needed by the PaymentController.
 }
