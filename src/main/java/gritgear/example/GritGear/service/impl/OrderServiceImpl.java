@@ -276,6 +276,24 @@ public class OrderServiceImpl implements OrderService {
         return mapToResponse(savedOrder);
     }
 
+    @Override
+    public Order createOrder(Long amount, String currency) {
+        Order order = new Order();
+        order.setTotalAmount(BigDecimal.valueOf(amount));
+        order.setStatus("PENDING");
+        order.setCreatedAt(LocalDateTime.now());
+        // Note: You might want to associate a User here via SecurityContext
+        return orderRepository.save(order);
+    }
+
+    @Override
+    public void updateOrderStatus(Long orderId, String status) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found: " + orderId));
+        order.setStatus(status);
+        orderRepository.save(order);
+    }
+
     /**
      * Maps Order entity to OrderResponseDTO.
      */
