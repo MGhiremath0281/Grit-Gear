@@ -45,13 +45,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                // Add basic CORS support to prevent browser-based 401s
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/public/auth/**").permitAll()
+                        // FIX: Changed from /public/auth/** to /api/auth/** to match your likely controller path
+                        .requestMatchers("/api/auth/**").permitAll()
+                        // FIX: Added Stripe Webhook to permitAll so orders can update to PAID
+                        .requestMatchers("/api/payment/webhook").permitAll()
                         .requestMatchers("/login/oauth2/**", "/oauth2/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
@@ -61,7 +63,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth -> oauth.successHandler(oAuth2LoginSuccessHandler))
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
-                            // LOG actual cause to console for debugging
+                            // Helps you see WHY it failed in the console
                             System.out.println("Blocked by Security: " + authException.getMessage());
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType("application/json");
@@ -75,7 +77,7 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("*")); // Change this to your frontend URL in production
+        config.setAllowedOrigins(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
