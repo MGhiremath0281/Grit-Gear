@@ -55,6 +55,11 @@ public class SecurityConfig {
 
                         // 2. Allows Stripe to send payment updates without a JWT
                         .requestMatchers("/api/payment/webhook").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**"
+                        ).permitAll()
 
                         // 3. Allows OAuth2 and error pages
                         .requestMatchers("/login/oauth2/**", "/oauth2/**", "/error").permitAll()
